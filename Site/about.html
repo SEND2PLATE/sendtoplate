@@ -23,14 +23,13 @@
 	</head>
 	<body class="no-sidebar">
 
-
 		<div class="modal blur-effect" id="popup">
 			<div class="popup-content">
 				<h3>Connexion à l'espace Membre</h3>
 				<div>
-			<form action="connexion.html" method="post" id="connexion">
+			<form id="connexionuti">
 	<div>
-       <label>
+    <label>
       Email : 
     </label>
     <div>
@@ -55,29 +54,32 @@
   </div>
 			</form>
 			<br />
-			Pas encore <a href="inscription.html" style="font-color:white;">inscrit ?</a> 
+			Pas encore <a id="inscription" href="inscription.html" style="font-color:white;">inscrit ?</a> 
 					
 					<div class="close"></div>
 				</div>
 			</div>
 		</div>
-  <script src="js/server.js"></script>
+
+
+
 		<!-- Header -->
 			<div id="header">
 				<div class="container">
 						
 					<!-- Logo -->
-						<h1><a href="#" id="logo"><img src="images/logo.tiff" /></a></h1>
+						<h1><a href="#" id="logo"><img src="images/logo.png" /></a></h1>
 					
 					<!-- Nav -->
 						<nav id="nav">
 							<ul>
 								<li><a href="index.html">Accueil</a></li>
-								<li id='management'>
-									<a  href="">Mon compte</a>
+                             
+								<li id="management">
+									<a href="">Mon compte</a>
 								
 									<ul>
-                                   		<li><a id='profil'>Mon Profil</a><li>
+										<li id='profil'><a>Mon Profil</a></li>
 										<li><a id='plattes'>Mes plaques suivies</a></li>
 										<li><a id='notife'>Mes notifications envoyées</a></li>
 										<li><a id='notifr'>Mes notifications reçues</a></li>
@@ -98,12 +100,13 @@
 
 									</ul>
 								</li>
+                                  
 
 								<li><a href="about.html">A propos</a></li>
 								<li><a href="contact.html">Contact</a></li>
-																	<li><a id="se" class="popup-button" data-modal="popup">Se Connecter/S'inscrire</a></li>
+								<li id="sep"><a id="se" href="" class="popup-button" data-modal="popup">Se Connecter</a></li>
+                                <li id="discop"><a id="disco" href="">Se déconnecter</a></li>
 								<li><a href="admin.html">Administration</a></li>
-
 
 							</ul>
 						</nav>
@@ -141,45 +144,33 @@ Le site www.send2plate est édité par X.
 				<section class="container">
 					<div class="row no-collapse-1">
 						<section class="4u">
-			<img class="avatar" src="images/avatar/david.tiff" width="60%" />
+			<img class="avatar" src="images/avatar/david.png" width="30%" />
 							<br /><span class="byline"><b>David Zerah</b></span>
 							<br />Etudiant à l'Ecole Centrale de Lille
 						</section>
 						<section class="4u">
-			<img class="avatar" src="images/avatar/axel.tiff" width="30%" />
+			<img class="avatar" src="images/avatar/axel.png" width="30%" />
 
 							<br /><span class="byline"><b>Axel Marciano</b></span>
 							<br />Etudiant à l'Ecole Centrale de Lille
 						</section>
+								
+				
+			
+					
 						<section class="4u">
-			<img class="avatar" src="images/avatar/baptiste.tiff" width="30%" />
-
-							<br /><span class="byline"><b>Baptiste Lalanne</b></span>
-							<br />Etudiant à l'Ecole Centrale de Lille
-						</section>
-	
-					</div>
-				</section>
-				<br />
-								<section class="container">
-					<div class="row no-collapse-1">
-						<section class="4u">
-			<img class="avatar" src="images/avatar/hamada.tiff" width="30%" />
-							<br /><span class="byline"><b>Hamada Zeine</b></span>
-							<br />Etudiant à l'Ecole Centrale de Lille
-						</section>
-						<section class="4u">
-			<img class="avatar" src="images/avatar/florian.tiff" width="30%" />
+			<img class="avatar" src="images/avatar/florian.png" width="30%" />
 
 							<br /><span class="byline"><b>Florian QU</b></span>
 							<br />Etudiant à l'Ecole Centrale de Lille
 						</section>
-						<section class="4u">
-			<img class="avatar" src="images/avatar/maxime.tiff" width="30%" />
+						<center></center><section class="4u">
+			<img class="avatar" src="images/avatar/maxime.png" width="30%" />
 
 							<br /><span class="byline"><b>Maxime Catrice</b></span>
 							<br />Etudiant à l'Ecole Centrale de Lille
 						</section>
+                        </center>
 	
 					</div>
 				</section>
@@ -205,70 +196,8 @@ Le site www.send2plate est édité par X.
 		<script src="js/popup.js"></script>
 			<!-- Redirection vers la page principale au bout de 3500 s ! -->
 	</body>
-<script type="text/javascript">
-	var plaque={};
 
-$('a#send').on({
 
-		click: function (e) {
-			
-			plaque.plaque=$('#plaque').val();
-			plaque.incident=$('#incident').val();
-			
-			
-			$.post('/api/user', plaque, function (data, success) {
-				
-				if(data==1){
-                    
-                    document.location.href="/send.html"
-                }
-				
-                else
-                    {
-                        document.location.href="/inscription.html"
-                        
-                    }
-			})
-		}
-			
-		
-})
-
-var connexion={};
-	
-$('input#connexionuser').on({click:function(e){
-
-	connexion.id=$('#mailco').val();
-	connexion.pass=$('#passco').val();
-	
-	$.post('api/signup',connexion,function(data,success){
-		
-		
-		
-		if(data==1){
-			
-            document.getElementById("se").style.visibility='hidden';
-            document.getElementById('management').style.visibility='visible';
-			document.location.href="/connexiont.html"
-			
-		}
-		
-		if(data==0){
-			
-			document.location.href="/connexionw.html"
-			
-		}
-		
-	})
-	
-	
-}})
-
-	
-
-	
-
-	
-</script>
+ <script src="js/server.js"></script>
 
 </html>

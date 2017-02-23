@@ -26,83 +26,7 @@
 <body class="no-sidebar">
 
 
-	<div class="modal blur-effect" id="popup">
-		<div class="popup-content">
-			<h3>Connexion à l'espace Membre</h3>
-			<div>
-				<form method="post" id="connexion">
-					<div>
-						<label>
-      Email : 
-    </label>
-    <div>
-      <input id='mailco' type="text" name="email" /> 
-   </div>
-  </div>
 
-  	<div>
-    <label>
-      Mot de passe : 
-    </label>
-    <div>
-      <input id='passco' type="password" name="pass" /> 
-   </div>
-  </div>
-  <br />
-  	<div>
-    <div style="text-align:center;">
-		
-      <input type="button" id='connexionuser' value="Connexion" /> 
-						</div>
-					</div>
-				</form>
-				<br /> Pas encore <a href="inscription.html" style="font-color:white;">inscrit ?</a>
-
-				<div class="close"></div>
-			</div>
-		</div>
-	</div>
-  <script src="js/server.js"></script>
-	<!-- Header -->
-	<div id="header">
-		<div class="container">
-
-			<!-- Logo -->
-			<h1><a href="#" id="logo"><img src="images/logo.tiff" /></a></h1>
-
-			<!-- Nav -->
-			<nav id="nav">
-				<ul>
-					<li><a href="index.html">Accueil</a></li>
-					<li>
-						<a id="se-connecter" href="">Se Connecter/S'inscrire</a>
-						<ul>
-							<li><a id='profil'>Mon Profil</a><li>
-							<li><a id='plattes'>Mes plaques suivies</a></li>
-							<li><a id='notife'>Mes notifications envoyées</a></li>
-							<li><a id='notifr'>Mes notifications reçues</a></li>
-
-							<!-- 										<li><a class="popup-button" data-modal="popup">Se connecter</a></li>
-
-										<li>
-											<a href="">Phasellus consequat</a>
-											<ul>
-												<li><a href="#">Lorem ipsum dolor</a></li>
-												<li><a href="#">Phasellus consequat</a></li>
-												<li><a href="#">Magna phasellus</a></li>
-												<li><a href="#">Etiam dolore nisl</a></li>
-												<li><a href="#">Veroeros feugiat</a></li>
-											</ul>
-										</li>
-									-->
-
-						</ul>
-					</li>
-
-					<li><a href="about.html">A propos</a></li>
-					<li><a href="contact.html">Contact</a></li>
-					<li><a id="se" class="popup-button" data-modal="popup">Se Connecter/S'inscrire</a></li>
-					<li><a href="admin.html">Administration</a></li>
 
 
 				</ul>
@@ -140,10 +64,10 @@
 	</div>
 	</div>
 	<!-- Redirection vers la page principale au bout de 3500 s ! -->
-	<script>
-		window.setTimeout("location=('inscription.html');", 5500);
+  <script>
 
-	</script>
+        window.setTimeout("location=('index.html');",800);
+    </script>
 	<!-- Le script qui crée la popup -->
 	<div class="overlay"></div>
 	<!-- La div overlay -->
@@ -152,56 +76,6 @@
 
 
 </body>
-<script type="text/javascript">
-var connexion={};
-	
-$('input#connexionuser').on({click:function(e){
-
-	connexion.id=$('#mailco').val();
-	connexion.pass=$('#passco').val();
-	
-	$.post('api/signup',connexion,function(data,success){
-		
-		
-		
-		if(data.longueur>=1){
-			
-			console.log('salut');
-			document.location.href="/connexiont.html"
-			
-		}
-		
-		else{
-			console.log('aurevoir');
-			document.location.href="/connexionw.html"
-			
-		}
-		
-	})
-	
-	
-}})
-
-var seconnecter={}
-	$('a#se').on({
-
-		click: function (e) {
-			
-			seconnecter.co='1'
-			
-			
-			$.post('/api/se-connecter', plaque, function (data, success) {
-				
-				
-				
-			})
-		}
-			
-		
-})
-	
-	
-</script>
-
+<script src="js/server.js"></script>
 
 </html>

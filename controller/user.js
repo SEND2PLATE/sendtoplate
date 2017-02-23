@@ -1,18 +1,16 @@
 var mongoose = require("mongoose");
-mongoose.connect("mongodb://admin:galerien@ds157539.mlab.com:57539/send2plate",function(err){
-     
-});
-
+mongoose.connect("mongodb://admin:galerien@ds157539.mlab.com:57539/send2plate", function (err) {});
 var async = require('async');
-
-
 var plaqueSchema = mongoose.Schema({
     num_plaque: String
     , raison: String
     , email: String
     , notif: String
+    , type: String
 });
+
 var Plaque = mongoose.model("Plaque", plaqueSchema);
+
 var userSchema = mongoose.Schema({
         email: String
         , pass: String
@@ -24,130 +22,143 @@ var userSchema = mongoose.Schema({
         , age: String
         , adresse: String
         , telephone: String
+        , pays:String
+    
     })
     /** Middleware for limited access */
 var User = mongoose.model("User", userSchema);
 
-function plaque_post(req, res,callback) {
-    
+function plaque_post(req, res, callback) {
     if (req.session.username) {
-
-    var query = User.find(null);
-    query.where('connexion', '1');
-    query.exec(function (err, rese) {
-        var result = {}
-        result.longueur = rese.length;
-        if (rese.length >= 1) {
-            var plaque_num = req.body.plaque;
-            var incident = req.body.incident;
-            var mail = rese[0].email;
-            var plaque = new Plaque({
-                num_plaque: plaque_num
-                , raison: incident
-                , email: mail
-                , notif: 'Strong'
-            });
-            plaque.save(function (err) {
-                if (err) {
-                    return console.error(err);
-                }
-            });
-        }
-        else {
-            var plaque_num = req.body.plaque;
-            var incident = req.body.incident;
-            var mail = '0'
-            var plaque = new Plaque({
-                num_plaque: plaque_num
-                , raison: incident
-                , email: mail
-                , notif: 'Strong'
-            });
-            plaque.save(function (err) {
-                if (err) {
-                    return console.error(err);
-                }
-            });
-        }
-    });
-        
+        var query = User.find(null);
+        query.where('connexion', '1');
+        query.exec(function (err, rese) {
+            var result = {}
+            result.longueur = rese.length;
+            if (rese.length >= 1) {
+                var plaque_num = req.body.plaque;
+                var incident = req.body.incident;
+                var mail = rese[0].email;
+                var plaque = new Plaque({
+                    num_plaque: plaque_num
+                    , raison: incident
+                    , email: mail
+                    , notif: 'Strong'
+                });
+                plaque.save(function (err) {
+                    if (err) {
+                        return console.error(err);
+                    }
+                });
+            }
+            else {
+                var plaque_num = req.body.plaque;
+                var incident = req.body.incident;
+                var mail = '0'
+                var plaque = new Plaque({
+                    num_plaque: plaque_num
+                    , raison: incident
+                    , email: mail
+                    , notif: 'Strong'
+                });
+                plaque.save(function (err) {
+                    if (err) {
+                        return console.error(err);
+                    }
+                });
+            }
+        });
         res.json(1)
-        
-        }
-    else
-        {
-            res.json(0);
-        }
+    }
+    else {
+        res.json(0);
+    }
 }
 
-function islog(req,res){
-    
-       if (req.session.username) {
-           res.json(1);
- }
-    else
-        {
-            res.json(0);
-        }
-    
+function islog(req, res) {
+    if (req.session.username) {
+        res.json(1);
+    }
+    else {
+        res.json(0);
+    }
 }
+
 function inscription(req, res) {
     var mail = req.body.mail;
     var password = req.body.password;
     var plaque = req.body.plaque;
-    var other = req.body.other;
-    var user = new User({
-        email: mail
-        , pass: password
-        , plak: plaque
-        , others: other
-        , connexion: '0'
-    })
+    if (req.body.other) {
+        var other = req.body.other;
+        console.log(mail)
+        console.log(password)
+        console.log(plaque)
+        var user = new User({
+            email: mail
+            , pass: password
+            , plak: plaque
+            , others: other
+        })
+    }
+    else {
+        var user = new User({
+            email: mail
+            , pass: password
+            , plak: plaque
+        })
+    }
     var plaque = new Plaque({
         email: mail
         , num_plaque: plaque
     })
-    user.save(function (err) {
-        if (err) {
-            return console.error(err);
+    var query = User.find(null);
+    query.where('email', mail);
+    query.exec(function (tkt, famille) {
+        console.log(famille)
+        if (famille.length > 0) {
+            console.log('lol')
+            res.json(2)
         }
-        plaque.save(function (err) {});
+        else {
+            user.save(function (err) {
+                if (err) {
+                    return console.error(err);
+                    res.json(0)
+                }
+                plaque.save(function (err) {});
+                res.json(1);
+            })
+        }
     })
-};
+}
 
 function userConnexion(req, res) {
     var username = req.body.id;
     var password = req.body.pass;
     var query = User.find(null);
     query.where('email', username);
-      query.exec(function(err,rese){
-        if(rese.length >=1){
+    query.exec(function (err, rese) {
+        if (rese.length >= 1) {
             query.where('pass', password);
-            query.exec(function(erour,resou){
-                if(resou.length>=1){
-                    
-                     req.session.username = req.body.id;
-                     
-                     res.json(1)
-                     
+            query.exec(function (erour, resou) {
+                if (resou.length >= 1) {
+                    req.session.username = req.body.id;
+                    res.json(1)
                 }
-                else{res.json(0);}
-                
+                else {
+                    res.json(0);
+                }
             })
         }
-          else{res.json(0);}
-      })
-   
-
-      
+        else {
+            res.json(0);
+        }
+    })
 }
 
-
 function userDeconnexion(req, res) {
-               
     req.session.username = "";
-
-   
+    res.json(1);
 }
 
 function modifierProfile(req, res) {
@@ -157,105 +168,79 @@ function modifierProfile(req, res) {
     var bpays = req.body.pays;
     var badresse = req.body.adresse;
     var btelephone = req.body.telephone;
-    User.update({
-        connexion: '1'
-    }, {
-        nom: bnom
-    }, {
-        multi: true
-    }, function (err) {});
-    User.update({
-        connexion: '1'
-    }, {
-        prenom: bprenom
-    }, {
-        multi: true
-    }, function (err) {});
-    User.update({
-        connexion: '1'
-    }, {
-        age: bage
-    }, {
-        multi: true
-    }, function (err) {});
-    User.update({
-        connexion: '1'
-    }, {
-        pays: bpays
-    }, {
-        multi: true
-    }, function (err) {});
-    User.update({
-        connexion: '1'
-    }, {
-        adresse: badresse
-    }, {
-        multi: true
-    }, function (err) {});
-    User.update({
-        connexion: '1'
-    }, {
-        telephone: btelephone
-    }, {
-        multi: true
-    }, function (err) {});
+    
+    var query=User.find(null);
+    query.where('email',req.session.username);
+    User.findOneAndUpdate(query,req.body,{upsert:true},function(err,doc){
+        
+        if (err) return res.send(500, { error: err });
+    return res.send("succesfully saved");
+    });
+ 
+    
+ 
 }
 
 function listesPlaques(req, res) {
     var resultp = [];
-    var query = User.find(null);
-    query.where('connexion', '1');
-    query.exec(function (err, rese) {
-        var queryp = Plaque.find(null);
-        queryp.where('email', rese[0].email);
-        queryp.exec(function (errr, resee) {
-            if (resee.length >= 1) {
-                var b = Math.min(3, resee.length);
-                for (i = 0; i < b; i++) {
-                    resultp.push(resee[i].num_plaque);
-                }
-                res.json(resultp);
+    var queryu=User.find(null);
+    queryu.where('email',req.session.username);
+    queryu.exec(function(eror,reso){
+        resultp.push(reso.plak)
+        
+    })
+     
+    
+    var username = req.body.id;
+    var queryp = Plaque.find(null);
+    queryp.where('email', req.session.username);
+    queryp.exec(function (errr, resee) {
+        
+        if (resee.length >= 1) {
+            if(resultp.length=0){var c=4} else{var c=3};
+            var b = Math.min(3, resee.length);
+            for (i = 0; i < b; i++) {
+                resultp.push(resee[i].num_plaque);
             }
-            else {
-                res.json(resultp);
-            }
-        })
+            res.json(resultp);
+        }
+        else {
+            res.json(0);
+        }
     })
 }
 
 function addplak(req, res) {
-    var query = User.find(null);
-    query.where('connexion', '1');
-    query.exec(function (err, rese) {
-        var result = {}
-        result.longueur = rese.length;
-        if (rese.length >= 1) {
-            var plaque_num = req.body.plaque;
-            var mail = rese[0].email;
-            var plaque = new Plaque({
-                num_plaque: plaque_num
-                , email: mail
-            , });
-            plaque.save(function (err) {
-                if (err) {
-                    return console.error(err);
-                }
-            });
+    var plaque_num = req.body.plaque;
+    var mail = req.body.id;
+    var plaque = new Plaque({
+        num_plaque: plaque_num
+        , email: mail
+        , type: 1
+    , });
+    var query=Plaque.find(null);
+    query.where('email',req.session.username);
+    query.where('type',1);
+    query.exec(function(erro,reso){
+        
+        if(reso.length>2){
+            res.json(0)
         }
-        else {
-            var plaque_num = req.body.plaque;
-            var mail = '0'
-            var plaque = new Plaque({
-                num_plaque: plaque_num
-                , email: mail
-            , });
-            plaque.save(function (err) {
-                if (err) {
-                    return console.error(err);
-                }
-            });
+        else{
+            
+              plaque.save(function (err) {
+        if (err) {
+            return console.error(err);
+            res.json(0)
         }
+        res.json(1)
     });
+            
+            
+        }
+        
+    })
+  
 }
 
 function admin(req, res) {
@@ -391,26 +376,35 @@ function pinfo(liste, callback) {
         callback(err, plaque1);
     })
 }
-
 //API PLAQUE
-
-function enterplate(req,res){
-            var plaque_num = req.body.plaque;
-            var incident = req.body.incident;
-            var mail = req.body.user;
-            var plaque = new Plaque({
-                num_plaque: plaque_num
-                , raison: incident
-                , email: mail
-                , notif: 'Strong'
-            });
-            plaque.save(function (err) {
-                if (err) {
-                    return console.error(err);
-                }
-            });
-
+function enterplate(req, res) {
+    var plaque_num = req.body.plaque;
+    var incident = req.body.incident;
+    var mail = req.body.user;
+    var plaque = new Plaque({
+        num_plaque: plaque_num
+        , raison: incident
+        , email: mail
+        , notif: 'Strong'
+    });
+    plaque.save(function (err) {
+        if (err) {
+            return console.error(err);
+        }
+    });
     res.json(1)
+}
+
+function info(req,res){
+    var query=User.find(null);
+    query.where('email',req.session.username);
+    User.findOne(query,function(err,doc){
+      
+        res.json(doc);        
+        
+        
+    });
+    
 }
 
 module.exports = function (app) {
@@ -424,7 +418,8 @@ module.exports = function (app) {
     app.post('/admin', admin)
     app.post('/notifsend', send)
     app.post('/receive', receive)
-    app.post('/log',islog)
-    app.post('/apiplate',enterplate)
-  
+    app.post('/log', islog)
+    app.post('/apiplate', enterplate)
+    app.post('/disconnect', userDeconnexion)
+    app.post('/getinfo',info)
 };

@@ -55,7 +55,7 @@
   </div>
 			</form>
 			<br />
-			Pas encore <a href="inscription.html" style="font-color:white;">inscrit ?</a> 
+			Pas encore <a id="inscription" href="inscription.html" style="font-color:white;">inscrit ?</a> 
 					
 					<div class="close"></div>
 				</div>
@@ -69,20 +69,21 @@
 				<div class="container">
 						
 					<!-- Logo -->
-						<h1><a href="#" id="logo"><img src="images/logo.tiff" /></a></h1>
+						<h1><a href="#" id="logo"><img src="images/logo.png" /></a></h1>
 					
 					<!-- Nav -->
 						<nav id="nav">
 							<ul>
 								<li><a href="index.html">Accueil</a></li>
-								<li id='management'>
-									<a  href="">Mon compte</a>
+                             
+								<li id="management">
+									<a href="">Mon compte</a>
 								
 									<ul>
-										<li id='profil'><a>Mon Profil</a></li>
-										<li><a id='plattes'>Mes plaques suivies</a></li>
-										<li><a id='notife'>Mes notifications envoyées</a></li>
-										<li><a id='notifr'>Mes notifications reçues</a></li>
+										<li><a href="" id="modifprofil">Mon Profil</a></li>
+										<li><a href="" id='platte'>Mes plaques suivies</a></li>
+										<li><a href="" id='notife'>Mes notifications envoyées</a></li>
+										<li><a href="" id='notifr'>Mes notifications reçues</a></li>
 
 										<!-- 										<li><a class="popup-button" data-modal="popup">Se connecter</a></li>
 
@@ -100,10 +101,12 @@
 
 									</ul>
 								</li>
+                                  
 
 								<li><a href="about.html">A propos</a></li>
 								<li><a href="contact.html">Contact</a></li>
-																	<li><a id="se" class="popup-button" data-modal="popup">Se Connecter/S'inscrire</a></li>
+								<li id="sep"><a id="se" href="" class="popup-button" data-modal="popup">Se Connecter</a></li>
+                                <li id="discop"><a id="disco" href="">Se déconnecter</a></li>
 								<li><a href="admin.html">Administration</a></li>
 
 
@@ -208,104 +211,7 @@
 		<script src="js/popup.js"></script>
 			<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
-<script type="text/javascript">
-	
 
-
-		
-	var plaque={};
-	
-$('a#send').on({
-
-		click: function (e) {
-			
-			plaque.plaque=$('#plaque').val();
-			plaque.incident=$('#incident').val();
-			
-			
-			$.post('/api/user', plaque, function (data, success) {
-				
-				if(data==1){
-                    
-                    document.location.href="/send.html"
-                }
-				
-                else
-                    {
-                        document.location.href="/inscription.html"
-                        
-                    }
-			})
-		}
-			
-		
-})
-
-var connexion={};
-	
-$('input#connexionuser').on({click:function(e){
-
-	connexion.id=$('#mailco').val();
-	connexion.pass=$('#passco').val();
-	
-	$.post('api/signup',connexion,function(data,success){
-		
-		
-		
-		if(data==1){
-			
-            document.getElementById("se").style.visibility='hidden';
-	
-            document.getElementById('management').style.visibility='visible';
-            document.location.href="/connexiont.html"
-     
-		}
-		
-		if(data==0){
-			
-			document.location.href="/connexionw.html"
-			
-		}
-		
-	})
-	
-	
-}})
-
-$('a#send').on({
-
-		click: function (e) {
-			
-			plaque.plaque=$('#plaque').val();
-			plaque.incident=$('#incident').val();
-			
-			
-			$.post('/api/user', plaque, function (data, success) {
-				
-				if(data==1){
-                    
-                    document.location.href="/send.html"
-                }
-				
-                else
-                    {
-                        document.location.href="/inscription.html"
-                        
-                    }
-			})
-		}
-			
-		
-})
-
-
-
-	
-
-
-
-	
-	</script>
 	  <script src="js/server.js"></script>
 	</body>
 </html>

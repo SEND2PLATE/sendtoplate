@@ -4,6 +4,7 @@
 	templated.co @templatedco
 	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
 -->
+
 <html>
 	<head>
 		<title>Send2Plate</title>
@@ -21,14 +22,14 @@
 		</noscript>
 		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
 	</head>
-	<body class="no-sidebar">
-
+   
+	<body class="homepage">
 
 		<div class="modal blur-effect" id="popup">
 			<div class="popup-content">
 				<h3>Connexion à l'espace Membre</h3>
 				<div>
-			<form action="connexion.html" method="post" id="connexion">
+			<form id="connexionuti">
 	<div>
     <label>
       Email : 
@@ -37,7 +38,7 @@
       <input id='mailco' type="text" name="email" /> 
    </div>
   </div>
-  <script src="js/server.js"></script>
+
   	<div>
     <label>
       Mot de passe : 
@@ -55,31 +56,35 @@
   </div>
 			</form>
 			<br />
-			Pas encore <a href="inscription.html" style="font-color:white;">inscrit ?</a> 
+			Pas encore <a id="inscription" href="inscription.html" style="font-color:white;">inscrit ?</a> 
 					
 					<div class="close"></div>
 				</div>
 			</div>
 		</div>
 
+
+
 		<!-- Header -->
 			<div id="header">
 				<div class="container">
 						
 					<!-- Logo -->
-						<h1><a href="#" id="logo"><img src="images/logo.tiff" /></a></h1>
+						<h1><a href="#" id="logo"><img src="images/logo.png" /></a></h1>
 					
 					<!-- Nav -->
 						<nav id="nav">
 							<ul>
 								<li><a href="index.html">Accueil</a></li>
-								<li>
-									<a id="se-connecter" href="">Se Connecter/S'inscrire</a>
+                             
+								<li id="management">
+									<a href="">Mon compte</a>
+								
 									<ul>
-										<li><a id="profil" href="profil.html">Mon Profil</a></li>
-										<li><a id='plattes'>Mes plaques suivies</a></li>
-										<li><a id='notife'>Mes notifications envoyées</a></li>
-										<li><a id='notifr'>Mes notifications reçues</a></li>
+										<li><a href="" id="modifprofil">Mon Profil</a></li>
+										<li><a href="" id='platte'>Mes plaques suivies</a></li>
+										<li><a href="" id='notife'>Mes notifications envoyées</a></li>
+										<li><a href="" id='notifr'>Mes notifications reçues</a></li>
 
 										<!-- 										<li><a class="popup-button" data-modal="popup">Se connecter</a></li>
 
@@ -97,13 +102,13 @@
 
 									</ul>
 								</li>
+                                  
 
 								<li><a href="about.html">A propos</a></li>
 								<li><a href="contact.html">Contact</a></li>
-																	<li><a id="se" class="popup-button" data-modal="popup">Se Connecter/S'inscrire</a></li>
+								<li id="sep"><a id="se" href="" class="popup-button" data-modal="popup">Se Connecter</a></li>
+                                <li id="discop"><a id="disco" href="">Se déconnecter</a></li>
 								<li><a href="admin.html">Administration</a></li>
-
-
 							</ul>
 						</nav>
 
@@ -141,7 +146,7 @@
         </label>
       <br /><br />
       <div style="text-align:center">
-		<input id="send" type="button" name="Submit" value="Modifier">
+		<input id="sendprofil" type="button" name="Submit" value="Modifier">
 	</div>
 			
 	</form>
@@ -163,82 +168,8 @@
 		<!-- Le script qui crée la popup -->
 		<div class="overlay"></div><!-- La div overlay -->
 		<script src="js/popup.js"></script>
+   <script src="js/server.js"></script>
 			</body>
-<script type="text/javascript">
-	
-var connexion={};
-	
-$('input#connexionuser').on({click:function(e){
 
-	connexion.id=$('#mailco').val();
-	connexion.pass=$('#passco').val();
-	
-	$.post('api/signup',connexion,function(data,success){
-		
-		
-		
-		if(data.longueur>=1){
-			
-			console.log('salut');
-			document.location.href="/connexiont.html"
-			
-		}
-		
-		else{
-			console.log('aurevoir');
-			document.location.href="/connexionw.html"
-			
-		}
-		
-	})
-	
-	
-}})
-
-var seconnecter={}
-	$('a#se').on({
-
-		click: function (e) {
-			
-			seconnecter.co='1'
-			
-			
-			$.post('/api/se-connecter', plaque, function (data, success) {
-				
-				
-				
-			})
-		}
-			
-		
-})
-	var profile={}
-	$('input#send').on({click:function(e){
-		
-		profile.nom=$('#name').val();
-		profile.prenom=$('#nickname').val();
-		profile.age=$('#age').val();
-		profile.pays=$('#country').val();
-		profile.adresse=$('#adresse').val();
-		profile.telephone=$('#phone').val();
-		
-		$.post('/api/profile', profile, function (data, success) {
-				
-				
-				
-				
-			})
-		
-		
-		
-		
-		
-		
-		
-		
-	}})
-	
-	
-</script>
 
 </html>

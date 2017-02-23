@@ -22,14 +22,13 @@
 		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
 	</head>
 	<body onload="admin()" class="no-sidebar">
-
 		<div class="modal blur-effect" id="popup">
 			<div class="popup-content">
 				<h3>Connexion à l'espace Membre</h3>
 				<div>
-			<form action="connexion.html" method="post" id="connexion">
+			<form id="connexionuti">
 	<div>
-<label>
+    <label>
       Email : 
     </label>
     <div>
@@ -52,32 +51,34 @@
       <input type="button" id='connexionuser' value="Connexion" /> 
    </div>
   </div>
-                  <script src="js/server.js"></script>
 			</form>
 			<br />
-			Pas encore <a href="inscription.html" style="font-color:white;">inscrit ?</a> 
+			Pas encore <a id="inscription" href="inscription.html" style="font-color:white;">inscrit ?</a> 
 					
 					<div class="close"></div>
 				</div>
 			</div>
 		</div>
 
+
+
 		<!-- Header -->
 			<div id="header">
 				<div class="container">
 						
 					<!-- Logo -->
-						<h1><a href="#" id="logo"><img src="images/logo.tiff" /></a></h1>
+						<h1><a href="#" id="logo"><img src="images/logo.png" /></a></h1>
 					
 					<!-- Nav -->
 						<nav id="nav">
 							<ul>
 								<li><a href="index.html">Accueil</a></li>
-								<li id='management'>
-									<a  href="">Mon compte</a>
+                             
+								<li id="management">
+									<a href="">Mon compte</a>
 								
 									<ul>
-										<li><a id='profil'>Mon Profil</a><li>
+										<li id='profil'><a>Mon Profil</a></li>
 										<li><a id='plattes'>Mes plaques suivies</a></li>
 										<li><a id='notife'>Mes notifications envoyées</a></li>
 										<li><a id='notifr'>Mes notifications reçues</a></li>
@@ -98,10 +99,12 @@
 
 									</ul>
 								</li>
+                                  
 
 								<li><a href="about.html">A propos</a></li>
 								<li><a href="contact.html">Contact</a></li>
-																	<li><a id="se" class="popup-button" data-modal="popup">Se Connecter/S'inscrire</a></li>
+								<li id="sep"><a id="se" href="" class="popup-button" data-modal="popup">Se Connecter</a></li>
+                                <li id="discop"><a id="disco" href="">Se déconnecter</a></li>
 								<li><a href="admin.html">Administration</a></li>
 
 
@@ -146,95 +149,8 @@
 		<div class="overlay"></div><!-- La div overlay -->
 		<script src="js/popup.js"></script>
 	</body>
+
 <script type="text/javascript">
-var connexion={};
-
-$('input#connexionuser').on({click:function(e){
-
-	connexion.id=$('#mailco').val();
-	connexion.pass=$('#passco').val();
-	
-	$.post('api/signup',connexion,function(data,success){
-		
-		
-		
-		if(data.longueur>=1){
-			
-			console.log('salut');
-			document.location.href="/connexiont.html"
-			
-		}
-		
-		else{
-			console.log('aurevoir');
-			document.location.href="/connexionw.html"
-			
-		}
-		
-	})
-	
-	
-}})
-
-	var plaque={};
-	
-$('a#send').on({
-
-		click: function (e) {
-			
-			plaque.plaque=$('#plaque').val();
-			plaque.incident=$('#incident').val();
-			
-			
-			$.post('/api/user', plaque, function (data, success) {
-				
-				if(data==1){
-                    
-                    document.location.href="/send.html"
-                    document.getElementById('management').style.visibility='visible';
-                }
-				
-                else
-                    {
-                        document.location.href="/inscription.html"
-                        
-                    }
-			})
-		}
-			
-		
-})
-
-var connexion={};
-	
-$('input#connexionuser').on({click:function(e){
-
-	connexion.id=$('#mailco').val();
-	connexion.pass=$('#passco').val();
-	
-	$.post('api/signup',connexion,function(data,success){
-		
-		
-		
-		if(data==1){
-			
-            document.getElementById("se").style.visibility='hidden';
-			document.location.href="/connexiont.html"
-			
-		}
-		
-		if(data==0){
-			
-			document.location.href="/connexionw.html"
-			
-		}
-		
-	})
-	
-	
-}})
-
-	
 
 	
 
@@ -261,4 +177,5 @@ function admin(){
 	
 	
 </script>
+<script src="js/server.js"></script>
 </html>
