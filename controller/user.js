@@ -142,7 +142,15 @@ function userConnexion(req, res) {
       
 }
 
+<<<<<<< HEAD
 
+=======
+function userDeconnexion(req, res) {
+               
+    req.session.username = null;
+   
+}
+>>>>>>> origin/master
 
 function modifierProfile(req, res) {
     var bnom = req.body.nom;
@@ -390,6 +398,7 @@ module.exports = function (app) {
     app.post('/user', plaque_post);
     app.post('/userInscription', inscription);
     app.post('/signup', userConnexion);
+    app.post('/logout', userDeconnexion);
     app.post('/profile', modifierProfile)
     app.post('/getplaques', listesPlaques)
     app.post('/addplak', addplak)
