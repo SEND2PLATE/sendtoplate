@@ -147,7 +147,7 @@ function userConnexion(req, res) {
 =======
 function userDeconnexion(req, res) {
                
-    req.session.username = null;
+    req.session.username = "";
    
 }
 >>>>>>> origin/master
