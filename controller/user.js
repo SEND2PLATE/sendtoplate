@@ -145,7 +145,8 @@ function userConnexion(req, res) {
 
 function userDeconnexion(req, res) {
                
-    req.session.username = '';
+    req.session.username = "";
+
    
 }
 
