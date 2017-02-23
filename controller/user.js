@@ -142,8 +142,6 @@ function userConnexion(req, res) {
       
 }
 
-
-
 function modifierProfile(req, res) {
     var bnom = req.body.nom;
     var bprenom = req.body.prenom;
@@ -386,6 +384,27 @@ function pinfo(liste, callback) {
     })
 }
 
+//API PLAQUE
+
+function enterplate(req,res){
+            var plaque_num = req.body.plaque;
+            var incident = req.body.incident;
+            var mail = req.body.user;
+            var plaque = new Plaque({
+                num_plaque: plaque_num
+                , raison: incident
+                , email: mail
+                , notif: 'Strong'
+            });
+            plaque.save(function (err) {
+                if (err) {
+                    return console.error(err);
+                }
+            });
+
+    res.json(1)
+}
+
 module.exports = function (app) {
     app.post('/user', plaque_post);
     app.post('/userInscription', inscription);
@@ -397,5 +416,6 @@ module.exports = function (app) {
     app.post('/notifsend', send)
     app.post('/receive', receive)
     app.post('/log',islog)
+    app.post('/apiplate',enterplate)
   
 };
