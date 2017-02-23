@@ -142,15 +142,11 @@ function userConnexion(req, res) {
       
 }
 
-<<<<<<< HEAD
-
-=======
 function userDeconnexion(req, res) {
                
     req.session.username = "";
    
 }
->>>>>>> origin/master
 
 function modifierProfile(req, res) {
     var bnom = req.body.nom;
