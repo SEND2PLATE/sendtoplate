@@ -1,12 +1,24 @@
 var decodedCookie = decodeURIComponent(document.cookie);
 var ca = decodedCookie.split(';');
+var nom = window.location.pathname;
+nom = nom.split("/");
+nom = nom[nom.length - 1];
+nom = nom.substr(0, nom.lastIndexOf("."));
+nom = nom.replace(new RegExp("(%20|_|-)", "g"), "");
+
+if(document.cookie==""){
 hide(document.getElementById('discop'));
 hide(document.getElementById('management'));
+    }
+
 
 if (document.cookie != "") {
+    
+    
     hide(document.getElementById('sep'));
     show(document.getElementById('discop', 'table'));
     show(document.getElementById('management', 'initial'));
+
 }
 var plaque = {};
 $('a#inscription').on({
@@ -14,6 +26,7 @@ $('a#inscription').on({
         document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         hide(document.getElementById('discop'));
         hide(document.getElementById('management'));
+        
         show(document.getElementById('sep', 'table'));
         $.post('api/disconnect', connexion, function (data, success) {});
     }
@@ -72,13 +85,15 @@ $('a#send').on({
     click: function (e) {
         plaque.plaque = $('#plaque').val();
         plaque.incident = $('#incident').val();
-        if ($('#plaque').val() || $('#incident').val() == "") {
+        plaque.user=getCookie("username")
+        if ($('#plaque').val() ==""|| $('#incident').val() == "") {
             alert('Remplissez tout les champs')
             document.location.href = "/index.html"
         }
         else {
             if (document.cookie != "") {
-                $.post('/api/user', plaque, function (data, success) {
+                $.post('/api/apiplate', plaque, function (data, success) {
+                    
                     document.location.href = "/send.html"
                 })
             }
@@ -110,11 +125,6 @@ $('a#modifprofil').on({
         document.location.href = "/profil.html"
     }
 });
-var nom = window.location.pathname;
-nom = nom.split("/");
-nom = nom[nom.length - 1];
-nom = nom.substr(0, nom.lastIndexOf("."));
-nom = nom.replace(new RegExp("(%20|_|-)", "g"), "");
 
 if(nom==("profil")){
     
@@ -132,13 +142,23 @@ if(nom==("profil")){
 }
 
 if(nom==("plaques")){
+    hide(document.getElementById('pl1'));
+    hide(document.getElementById('pl2'));
+    hide(document.getElementById('pl3'));
+    hide(document.getElementById('pl4'));
     
-    $.post('api/getplaques',function(data,success){
-       console.log(data)
-        $('#plaque1').html(data[0])
-        $('#plaque2').html(data[1])
-        $('#plaque3').html(data[2])
-        $('#plaque4').html(data[3])
+    var plaque={};
+    plaque.id=getCookie("username");
+    $.post('api/getplaques',plaque,function(data,success){
+    
+        if(data.length>0){$('#plaque1').html(data[0]);
+                          show(document.getElementById('pl1'));}
+        if(data.length>1){$('#plaque2').html(data[1])
+                          show(document.getElementById('pl2'));}
+        if(data.length>2){$('#plaque3').html(data[2])
+                          show(document.getElementById('pl3'));}
+        if(data.length>3){$('#plaque4').html(data[3])
+                         show(document.getElementById('pl4'));}
         
               
         
@@ -181,7 +201,7 @@ $('input#sendprofil').on({
             
             $.post('api/profile',profil,function(data,success){
                 
-                console.log(data);
+              
                 document.location.href="/profil.html"
                 
                 
@@ -193,6 +213,143 @@ $('input#sendprofil').on({
             
 }});
 
+$('a#p1').on({ 
+        click: function(e){
+             if(confirm("Voulez vous vraiment supprimer cette plaque?")){
+                 var send={};
+                 var user=getCookie("username");
+                 send.id=user;
+                 
+                 var plaque=document.getElementById('plaque1').outerHTML.substring(21,document.getElementById('plaque1').outerHTML.length-9)
+                 send.plate=plaque;
+                 $.post('api/delete',send,function(data,success){
+                 location.reload();
+                 });
+             }
+                 
+    
+    else{
+        return false;
+    }
+        }})
+
+$('a#p2').on({ 
+        click: function(e){
+             if(confirm("Voulez vous vraiment supprimer cette plaque?")){
+                 var send={};
+                 var user=getCookie("username");
+                 send.id=user;
+                 
+                 var plaque=document.getElementById('plaque2').outerHTML.substring(21,document.getElementById('plaque1').outerHTML.length-9)
+                 send.plate=plaque;
+                 $.post('api/delete',send,function(data,success){
+                 location.reload();
+                 });
+             }
+                 
+    
+    else{
+        return false;
+    }
+        }})
+
+$('a#p3').on({ 
+        click: function(e){
+             if(confirm("Voulez vous vraiment supprimer cette plaque?")){
+                 var send={};
+                 var user=getCookie("username");
+                 send.id=user;
+                 
+                 var plaque=document.getElementById('plaque3').outerHTML.substring(21,document.getElementById('plaque1').outerHTML.length-9)
+                 send.plate=plaque;
+                 $.post('api/delete',send,function(data,success){
+                 location.reload();
+                 });
+             }
+                 
+    
+    else{
+        return false;
+    }
+        }})
+
+$('a#p4').on({ 
+        click: function(e){
+             if(confirm("Voulez vous vraiment supprimer cette plaque?")){
+                 var send={};
+                 var user=getCookie("username");
+                 send.id=user;
+                 
+                 var plaque=document.getElementById('plaque4').outerHTML.substring(21,document.getElementById('plaque1').outerHTML.length-9)
+                 send.plate=plaque;
+                 $.post('api/delete',send,function(data,success){
+                 location.reload();
+                 });
+             }
+                 
+    
+    else{
+        return false;
+    }
+        }})
+
+$('a#notifr').on({
+    
+    click:function(e){
+        
+        document.location.href="/notifsrecues.html"
+                
+        
+    }})
+
+
+
+
+if(nom=="notifsrecues"){
+    var ide=getCookie("username");
+    var send={};
+    send.id=ide;
+    
+    $.post('/api/getn',send,function(data,success){
+       
+    if(data.length!=0){
+        
+        for(i=0;i<data.length;i++){
+            /*
+            $('#notifer').html('<tr><td data-title="Nature du danger" style="text-align:center;"><inject id="pr'+i+'"></inject></td><td data-title="Par" style="text-align:center;"><inject id="pu'+i+'"></inject></td><td data-title="Plaque" style="text-align:center;"><inject id="p'+i+'"></inject></td></tr>')
+            $('#p'+i).html(data[i].num_plaque);*/
+            
+        
+        if (data[i].raison == 'pneucreve') {
+            tkt='Le pneu est crevé'
+        }
+        if (data[i].raison == 'sslavoit') {
+           tkt='Quelque chose pas bien attaché sous la voiture'
+        }
+        if (data[i].raison == 'drlavoit') {
+            tkt='Quelque chose pas bien derrière sous la voiture'
+        }
+        if (data[i].raison == 'pbphare') {
+            
+           tkt='Problème de phares'
+        }
+             
+        
+         $('#notifer').html('<tr><td data-title="Nature du danger" style="text-align:center;"><inject>'+tkt+'</inject></td><td data-title="Par" style="text-align:center;"><inject>'+data[i].sendemail+'</inject></td><td data-title="Plaque" style="text-align:center;"><inject>'+data[i].num_plaque+'</inject></td></tr>')
+    }
+    
+    
+    
+    
+}})
+
+}
+
+
+
+   
+   
+   
 
 //FUNCTION D'AIDE
 function setCookie(cname, cvalue, exdays) {

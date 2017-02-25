@@ -1,9 +1,4 @@
-<!DOCTYPE HTML>
-<!--
-	Horizons by TEMPLATED
-	templated.co @templatedco
-	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
--->
+
 <html>
 	<head>
 		<title>Send2Plate</title>
@@ -15,20 +10,21 @@
 		<script src="js/skel.min.js"></script>
 		<script src="js/skel-layers.min.js"></script>
 		<script src="js/init.js"></script>
+        
 		<noscript>
 			<link rel="stylesheet" href="css/skel.css" />
 			<link rel="stylesheet" href="css/style.css" />
 		</noscript>
 		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
 	</head>
-	<body onload="receive()" class="no-sidebar">
+	<body class="homepage">
 
 
 		<div class="modal blur-effect" id="popup">
 			<div class="popup-content">
 				<h3>Connexion à l'espace Membre</h3>
 				<div>
-			<form action="connexion.html" method="post" id="connexion">
+			<form id="connexionuti">
 	<div>
     <label>
       Email : 
@@ -55,31 +51,35 @@
   </div>
 			</form>
 			<br />
-			Pas encore <a href="inscription.html" style="font-color:white;">inscrit ?</a> 
+			Pas encore <a id="inscription" href="inscription.html" style="font-color:white;">inscrit ?</a> 
 					
 					<div class="close"></div>
 				</div>
 			</div>
 		</div>
 
+
+
 		<!-- Header -->
 			<div id="header">
 				<div class="container">
 						
 					<!-- Logo -->
-						<h1><a href="#" id="logo"><img src="images/logo.tiff" /></a></h1>
+						<h1><a href="#" id="logo"><img src="images/logo.png" /></a></h1>
 					
 					<!-- Nav -->
 						<nav id="nav">
 							<ul>
 								<li><a href="index.html">Accueil</a></li>
-								<li>
-									<a id="se-connecter" href="">Se Connecter/S'inscrire</a>
+                             
+								<li id="management">
+									<a href="">Mon compte</a>
+								
 									<ul>
-										<li><a id='profil'>Mon Profil</a><li>
-										<li><a id='plattes'>Mes plaques suivies</a></li>
-										<li><a id='notife'>Mes notifications envoyées</a></li>
-										<li><a id='notifr'>Mes notifications reçues</a></li>
+										<li><a href="" id="modifprofil">Mon Profil</a></li>
+										<li><a href="" id='platte'>Mes plaques suivies</a></li>
+										
+										<li><a href="" id='notifr'>Mes notifications reçues</a></li>
 
 										<!-- 										<li><a class="popup-button" data-modal="popup">Se connecter</a></li>
 
@@ -97,10 +97,12 @@
 
 									</ul>
 								</li>
+                                  
 
 								<li><a href="about.html">A propos</a></li>
 								<li><a href="contact.html">Contact</a></li>
-																	<li><a id="se" class="popup-button" data-modal="popup">Se Connecter/S'inscrire</a></li>
+								<li id="sep"><a id="se" href="" class="popup-button" data-modal="popup">Se Connecter</a></li>
+                                <li id="discop"><a id="disco" href="">Se déconnecter</a></li>
 								<li><a href="admin.html">Administration</a></li>
 
 
@@ -131,47 +133,12 @@
 
 <th><b>Nature du danger</b></th>
 <th><b>Par </b></th>
+<th><b>Plaque </b></th>
 </tr>
 </thead>
-<tbody>
-<tr>
-
-<td data-title="Nature du danger" style="text-align:center;"><inject id="p11"></inject></td>
-<td data-title="Par" style="text-align:center;"><inject id="pu1"></inject> <a href="like.html"></a></td>
-</tr>
-
- </tbody>
-</table>
-</div>
+<tbody id='notifer'>
 
 
-<!-- Fin répétition -->
-
-
-
-			<h4 style="text-align:center;"><span style="text-decoration : underline;"><inject id="p2"></inject></span></h4>			
-						<!-- En cas de validation -->
-						<!-- ATTENTION : VERIFIER SI LE PSEUDO EST EXISTANT -->
-<div class="responsive-table-line" style="margin:0px auto;max-width:700px;">
-<table class="table table-bordered table-condensed table-body-center" >
-<thead>
-
-</thead>
-<tbody>
-
-
-<tr>
-
-<td data-title="Nature du danger" style="text-align:center;"><inject id="p12"></inject></td>
-<td data-title="Par" style="text-align:center;"><inject id="pu12"></inject> <a href="like.html"></a></td>
-</tr>
-
-
-<tr>
-
-<td data-title="Nature du danger" style="text-align:center;"><inject id="p22"></inject></td>
-<td data-title="Like" style="text-align:center;"><inject id="pu22"></inject></td>
-</tr>
 
  </tbody>
 </table>
@@ -202,70 +169,8 @@
 		<!-- Le script qui crée la popup -->
 		<div class="overlay"></div><!-- La div overlay -->
 		<script src="js/popup.js"></script>
+    <script src="js/server.js"></script>
 	</body>
-<script type="text/javascript">
-var connexion={};
-	
-$('input#connexionuser').on({click:function(e){
 
-	connexion.id=$('#mailco').val();
-	connexion.pass=$('#passco').val();
-	
-	$.post('api/signup',connexion,function(data,success){
-		
-		
-		
-		if(data.longueur>=1){
-			
-			console.log('salut');
-			document.location.href="/connexiont.html"
-			
-		}
-		
-		else{
-			console.log('aurevoir');
-			document.location.href="/connexionw.html"
-			
-		}
-		
-	})
-	
-	
-}})
-
-var seconnecter={}
-	$('a#se').on({
-
-		click: function (e) {
-			
-			seconnecter.co='1'
-			
-			
-			$.post('/api/se-connecter', plaque, function (data, success) {
-				
-				
-				
-			})
-		}
-			
-		
-})
-	
-	
-function receive(){
-	seconnecter.salut='1'
-	$.post('api/receive',seconnecter,function(data,success){
-		console.log(data);
-		$("#p1").html(data.num);
-		$('#p11').html(data.raison);
-		$('#pu1').html(data.email);
-		
-		
-	})
-	
-	
-	
-}
-</script>
 
 </html>

@@ -1,5 +1,9 @@
 var mongoose = require("mongoose");
-mongoose.connect("mongodb://admin:galerien@ds157539.mlab.com:57539/send2plate", function (err) {});
+mongoose.connect("mongodb://admin:galerien@ds145389.mlab.com:45389/sendtoplate",function(errour){
+     
+
+});
+mongoose.set('debug',true);
 var async = require('async');
 var plaqueSchema = mongoose.Schema({
     num_plaque: String
@@ -7,6 +11,7 @@ var plaqueSchema = mongoose.Schema({
     , email: String
     , notif: String
     , type: String
+    , sendemail:String
 });
 
 var Plaque = mongoose.model("Plaque", plaqueSchema);
@@ -28,6 +33,9 @@ var userSchema = mongoose.Schema({
     /** Middleware for limited access */
 var User = mongoose.model("User", userSchema);
 
+var request = require("request");
+
+
 function plaque_post(req, res, callback) {
     if (req.session.username) {
         var query = User.find(null);
@@ -36,7 +44,7 @@ function plaque_post(req, res, callback) {
             var result = {}
             result.longueur = rese.length;
             if (rese.length >= 1) {
-                var plaque_num = req.body.plaque;
+                var plaque_num = req.body.plaque.toUpperCase();
                 var incident = req.body.incident;
                 var mail = rese[0].email;
                 var plaque = new Plaque({
@@ -52,7 +60,7 @@ function plaque_post(req, res, callback) {
                 });
             }
             else {
-                var plaque_num = req.body.plaque;
+                var plaque_num = req.body.plaque.toUpperCase();
                 var incident = req.body.incident;
                 var mail = '0'
                 var plaque = new Plaque({
@@ -87,12 +95,10 @@ function islog(req, res) {
 function inscription(req, res) {
     var mail = req.body.mail;
     var password = req.body.password;
-    var plaque = req.body.plaque;
+    var plaque = req.body.plaque.toUpperCase();
     if (req.body.other) {
         var other = req.body.other;
-        console.log(mail)
-        console.log(password)
-        console.log(plaque)
+       
         var user = new User({
             email: mail
             , pass: password
@@ -110,13 +116,14 @@ function inscription(req, res) {
     var plaque = new Plaque({
         email: mail
         , num_plaque: plaque
+        , type:1
     })
     var query = User.find(null);
     query.where('email', mail);
     query.exec(function (tkt, famille) {
-        console.log(famille)
+      
         if (famille.length > 0) {
-            console.log('lol')
+           
             res.json(2)
         }
         else {
@@ -182,23 +189,18 @@ function modifierProfile(req, res) {
 }
 
 function listesPlaques(req, res) {
+  
     var resultp = [];
-    var queryu=User.find(null);
-    queryu.where('email',req.session.username);
-    queryu.exec(function(eror,reso){
-        resultp.push(reso.plak)
-        
-    })
-     
+    var username=req.body.id;
     
-    var username = req.body.id;
     var queryp = Plaque.find(null);
-    queryp.where('email', req.session.username);
+    queryp.where('email', username);
+    queryp.where('type',1)
     queryp.exec(function (errr, resee) {
-        
+       
         if (resee.length >= 1) {
-            if(resultp.length=0){var c=4} else{var c=3};
-            var b = Math.min(3, resee.length);
+            
+            var b = Math.min(4,resee.length)
             for (i = 0; i < b; i++) {
                 resultp.push(resee[i].num_plaque);
             }
@@ -211,7 +213,7 @@ function listesPlaques(req, res) {
 }
 
 function addplak(req, res) {
-    var plaque_num = req.body.plaque;
+    var plaque_num = req.body.plaque.toUpperCase();
     var mail = req.body.id;
     var plaque = new Plaque({
         num_plaque: plaque_num
@@ -223,7 +225,7 @@ function addplak(req, res) {
     query.where('type',1);
     query.exec(function(erro,reso){
         
-        if(reso.length>2){
+        if(reso.length>3){
             res.json(0)
         }
         else{
@@ -358,7 +360,7 @@ function pinfo(liste, callback) {
     query.where('num_plaque', liste[0]);
     query.where('notif', 'Strong');
     query.exec(function (err, rese) {
-        console.log(rese[0]);
+        
         plaque1.num = liste[0];
         plaque1.email = rese[0].email;
         if (rese[0].raison == 'pneucreve') {
@@ -378,21 +380,22 @@ function pinfo(liste, callback) {
 }
 //API PLAQUE
 function enterplate(req, res) {
-    var plaque_num = req.body.plaque;
+    var plaque_num = req.body.plaque.toUpperCase();
     var incident = req.body.incident;
     var mail = req.body.user;
     var plaque = new Plaque({
         num_plaque: plaque_num
         , raison: incident
-        , email: mail
+        , sendemail: mail
         , notif: 'Strong'
+        , type: 0
     });
     plaque.save(function (err) {
         if (err) {
             return console.error(err);
         }
     });
-    res.json(1)
+    res.json(plaque);
 }
 
 function info(req,res){
@@ -406,6 +409,98 @@ function info(req,res){
     });
     
 }
+
+
+function getNotif(req,res){
+    
+    var user=req.body.id;
+    
+       var options = { method: 'POST',
+  url: 'http://sendtoplate.herokuapp.com/api/getplaques',
+  headers: 
+   { 'postman-token': '3b103afe-9be6-7e0b-4154-936d3fbadfa8',
+     'cache-control': 'no-cache',
+     'content-type': 'application/x-www-form-urlencoded' },
+  form: { id: "axel.marciano@gmail.com" } };
+
+request(options, function (error, response, body) {
+    
+  if (error) throw new Error(error);
+    var cut=[];
+    var chaine=response.body.substring(1,response.body.length-1);
+    var reg=new RegExp("[ ,;]+", "g");
+    var tableau=chaine.split(reg);
+ 
+    for(i=0;i<tableau.length;i++){
+        
+        cut[i]=tableau[i].substring(1,tableau[i].length-1);
+        
+    }
+ 
+    
+    
+var resultp=[];
+   
+  
+var resultp=[];
+    
+    Plaque.find()
+    .where("num_plaque")
+    .in(cut)
+    .where("type")
+    .in(['0'])
+    .exec(function (err, records) {
+       
+        res.json(records);
+    })
+           
+    
+    });
+}
+
+function deleteplate(req,res){
+    
+    var user=req.body.id;
+      
+    Plaque.remove()
+    .where("num_plaque")
+    .in([req.body.plate])
+    .where("email")
+    .in([req.body.id])
+    .exec(function (err, records) {
+        
+        res.json(1);
+        if(err){res.json(0)}
+    })
+        
+}
+
+function myNotif(req,res){
+    
+    var resultp = [];
+    var username=req.body.id;
+    
+    var queryp = Plaque.find(null);
+    queryp.where('sendemail', username);
+    queryp.where('type',0)
+    queryp.exec(function (errr, resee) {
+       
+        if (resee.length >= 1) {
+            
+            res.json(resee);
+        }
+        else {
+            res.json(0);
+        }
+    })
+    
+    
+    
+}
+
+
+               
+
 
 module.exports = function (app) {
     app.post('/user', plaque_post);
@@ -422,4 +517,8 @@ module.exports = function (app) {
     app.post('/apiplate', enterplate)
     app.post('/disconnect', userDeconnexion)
     app.post('/getinfo',info)
+    app.post('/getn',getNotif)
+    app.post('/delete',deleteplate)
+    app.post('/mNotif',myNotif)
+
 };

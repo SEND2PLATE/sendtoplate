@@ -78,10 +78,10 @@
 									<a href="">Mon compte</a>
 								
 									<ul>
-										<li id='profil'><a>Mon Profil</a></li>
-										<li><a id='plattes'>Mes plaques suivies</a></li>
-										<li><a id='notife'>Mes notifications envoyées</a></li>
-										<li><a id='notifr'>Mes notifications reçues</a></li>
+										<li><a href="" id="modifprofil">Mon Profil</a></li>
+										<li><a href="" id='platte'>Mes plaques suivies</a></li>
+										
+										<li><a href="" id='notifr'>Mes notifications reçues</a></li>
 
 										<!-- 										<li><a class="popup-button" data-modal="popup">Se connecter</a></li>
 
@@ -162,7 +162,7 @@ function admin(){
 	
 	$.post('/api/admin',admin,function(data,success){
 		
-		console.log(data);
+		
 		$('#nm').html(data.user);
 		$('#np').html(data.plaque);
 		$('#ns').html(data.plaquen);
