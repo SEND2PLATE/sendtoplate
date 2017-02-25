@@ -311,7 +311,7 @@ if(nom=="notifsrecues"){
     send.id=ide;
     
     $.post('/api/getn',send,function(data,success){
-       
+       console.log(data)
     if(data.length!=0){
         
         for(i=0;i<data.length;i++){
@@ -335,7 +335,7 @@ if(nom=="notifsrecues"){
         }
              
         
-         $('#notifer').html('<tr><td data-title="Nature du danger" style="text-align:center;"><inject>'+tkt+'</inject></td><td data-title="Par" style="text-align:center;"><inject>'+data[i].sendemail+'</inject></td><td data-title="Plaque" style="text-align:center;"><inject>'+data[i].num_plaque+'</inject></td></tr>')
+         $('#notifer').html('<tr><td data-title="Nature du danger" style="text-align:center;"><inject>'+tkt+'</inject></td><td data-title="Par" style="text-align:center;"><inject>'+data[i].sendemail+'</inject></td><td data-title="Plaque" style="text-align:center;"><inject>'+data[i].num_plaque+'</inject></td></tr>'+'</inject></td><td data-title="Date" style="text-align:center;"><inject>'+data[i].date.substring(0,17)+'</inject></td></tr>')
     }
     
     

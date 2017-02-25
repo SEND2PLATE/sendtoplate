@@ -5,6 +5,8 @@ mongoose.connect("mongodb://admin:galerien@ds145389.mlab.com:45389/sendtoplate",
 });
 mongoose.set('debug',true);
 var async = require('async');
+
+// Schema for the dabase
 var plaqueSchema = mongoose.Schema({
     num_plaque: String
     , raison: String
@@ -12,6 +14,7 @@ var plaqueSchema = mongoose.Schema({
     , notif: String
     , type: String
     , sendemail:String
+    , date:String
 });
 
 var Plaque = mongoose.model("Plaque", plaqueSchema);
@@ -32,56 +35,10 @@ var userSchema = mongoose.Schema({
     })
     /** Middleware for limited access */
 var User = mongoose.model("User", userSchema);
-
+//
 var request = require("request");
 
 
-function plaque_post(req, res, callback) {
-    if (req.session.username) {
-        var query = User.find(null);
-        query.where('connexion', '1');
-        query.exec(function (err, rese) {
-            var result = {}
-            result.longueur = rese.length;
-            if (rese.length >= 1) {
-                var plaque_num = req.body.plaque.toUpperCase();
-                var incident = req.body.incident;
-                var mail = rese[0].email;
-                var plaque = new Plaque({
-                    num_plaque: plaque_num
-                    , raison: incident
-                    , email: mail
-                    , notif: 'Strong'
-                });
-                plaque.save(function (err) {
-                    if (err) {
-                        return console.error(err);
-                    }
-                });
-            }
-            else {
-                var plaque_num = req.body.plaque.toUpperCase();
-                var incident = req.body.incident;
-                var mail = '0'
-                var plaque = new Plaque({
-                    num_plaque: plaque_num
-                    , raison: incident
-                    , email: mail
-                    , notif: 'Strong'
-                });
-                plaque.save(function (err) {
-                    if (err) {
-                        return console.error(err);
-                    }
-                });
-            }
-        });
-        res.json(1)
-    }
-    else {
-        res.json(0);
-    }
-}
 
 function islog(req, res) {
     if (req.session.username) {
@@ -380,6 +337,7 @@ function pinfo(liste, callback) {
 }
 //API PLAQUE
 function enterplate(req, res) {
+    var d=new Date();
     var plaque_num = req.body.plaque.toUpperCase();
     var incident = req.body.incident;
     var mail = req.body.user;
@@ -389,24 +347,28 @@ function enterplate(req, res) {
         , sendemail: mail
         , notif: 'Strong'
         , type: 0
+        , date: d
     });
     plaque.save(function (err) {
         if (err) {
             return console.error(err);
         }
     });
-    res.json(plaque);
+    res.json(1);
 }
 
 function info(req,res){
     var query=User.find(null);
-    query.where('email',req.session.username);
+    var passadmin='sendtoplateadministration4561&'
+    if (req.body.pass==passadmin){
+    query.where('email',req.session.id);
     User.findOne(query,function(err,doc){
       
         res.json(doc);        
         
         
     });
+    }
     
 }
 
@@ -421,7 +383,7 @@ function getNotif(req,res){
    { 'postman-token': '3b103afe-9be6-7e0b-4154-936d3fbadfa8',
      'cache-control': 'no-cache',
      'content-type': 'application/x-www-form-urlencoded' },
-  form: { id: "axel.marciano@gmail.com" } };
+  form: { id: req.body.id} };
 
 request(options, function (error, response, body) {
     
@@ -503,7 +465,7 @@ function myNotif(req,res){
 
 
 module.exports = function (app) {
-    app.post('/user', plaque_post);
+  
     app.post('/userInscription', inscription);
     app.post('/signup', userConnexion);
     app.post('/logout', userDeconnexion);
