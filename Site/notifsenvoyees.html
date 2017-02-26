@@ -15,7 +15,7 @@
 		<script src="js/skel.min.js"></script>
 		<script src="js/skel-layers.min.js"></script>
 		<script src="js/init.js"></script>
-        <script src="js/server.js"></script>
+        
 		<noscript>
 			<link rel="stylesheet" href="css/skel.css" />
 			<link rel="stylesheet" href="css/style.css" />
@@ -83,7 +83,7 @@
 									<ul>
 										<li><a href="" id="modifprofil">Mon Profil</a></li>
 										<li><a href="" id='platte'>Mes plaques suivies</a></li>
-										
+										<li><a href="" id='notife'>Mes notifications envoyées</a></li>
 										<li><a href="" id='notifr'>Mes notifications reçues</a></li>
 
 										<!-- 										<li><a class="popup-button" data-modal="popup">Se connecter</a></li>
@@ -136,8 +136,9 @@
 <thead>
 <tr>
 
-<th><b>Nature du danger</b></th>
-<th><b>Plaque </b></th>
+<th><b>Plaque</b></th>
+<th><b>Date </b></th>
+<th><b>Remerciement</b></th>
 </tr>
 </thead>
 <tbody id="notifeb">
@@ -175,7 +176,12 @@
 		<!-- Le script qui crée la popup -->
 		<div class="overlay"></div><!-- La div overlay -->
 		<script src="js/popup.js"></script>
+<script src="js/server.js"></script>
+
+
 	</body>
+
+
 
 
 </html>

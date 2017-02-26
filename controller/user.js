@@ -3,7 +3,7 @@ mongoose.connect("mongodb://admin:galerien@ds145389.mlab.com:45389/sendtoplate",
      
 
 });
-mongoose.set('debug',true);
+
 var async = require('async');
 
 // Schema for the dabase
@@ -14,7 +14,8 @@ var plaqueSchema = mongoose.Schema({
     , notif: String
     , type: String
     , sendemail:String
-    , date:String
+    , date:String,
+    thanks:String
 });
 
 var Plaque = mongoose.model("Plaque", plaqueSchema);
@@ -411,6 +412,7 @@ var resultp=[];
     .in(cut)
     .where("type")
     .in(['0'])
+    .sort({date: -1})
     .exec(function (err, records) {
        
         res.json(records);
@@ -445,6 +447,7 @@ function myNotif(req,res){
     var queryp = Plaque.find(null);
     queryp.where('sendemail', username);
     queryp.where('type',0)
+    queryp.sort({date: 1})
     queryp.exec(function (errr, resee) {
        
         if (resee.length >= 1) {
@@ -460,6 +463,22 @@ function myNotif(req,res){
     
 }
 
+function remerciement(req,res){
+    
+    console.log(req.body);
+    var query=Plaque.find(null);
+    query.where('sendemail',req.body.sendemail);
+    query.where('num_plaque',req.body.plaque);
+    
+    Plaque.findOneAndUpdate(query,req.body,{upsert:true},function(err,doc){
+        console.log(doc);
+        if (err) return res.send(500, { error: err });
+    return res.send("succesfully saved");
+    });
+    
+    
+    
+}
 
                
 
@@ -482,5 +501,6 @@ module.exports = function (app) {
     app.post('/getn',getNotif)
     app.post('/delete',deleteplate)
     app.post('/mNotif',myNotif)
+    app.post('/thanks',remerciement)
 
 };
