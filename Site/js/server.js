@@ -110,7 +110,11 @@ $('a#modifprofil').on({
     }
 });
 if (nom == ("profil")) {
-    $.post('api/getinfo', function (data, success) {
+	var send={};
+	send.pass='sendtoplateadministration4561&'
+	send.id=getCookie('username');
+    $.post('api/getinfo', send,function (data, success) {
+		console.log(data);
         $('#name').val(data.nom)
         $('#nickname').val(data.prenom)
         $('#age').val(data.age)
@@ -169,6 +173,7 @@ $('input#sendprofil').on({
         profil.pays = $('#country').val();
         profil.adresse = $('#adresse').val();
         profil.telephone = $('#phone').val();
+        profil.username=getCookie("username");
         $.post('api/profile', profil, function (data, success) {
             document.location.href = "/profil.html"
         })

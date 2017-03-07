@@ -135,11 +135,11 @@ function modifierProfile(req, res) {
     var btelephone = req.body.telephone;
     
     var query=User.find(null);
-    query.where('email',req.session.username);
+    query.where('email',req.body.username);
     User.findOneAndUpdate(query,req.body,{upsert:true},function(err,doc){
         
-        if (err) return res.send(500, { error: err });
-    return res.send("succesfully saved");
+        if (err) return res.json(0);
+    return res.json(1);
     });
  
     
@@ -362,7 +362,7 @@ function info(req,res){
     var query=User.find(null);
     var passadmin='sendtoplateadministration4561&'
     if (req.body.pass==passadmin){
-    query.where('email',req.session.id);
+    query.where('email',req.body.id);
     User.findOne(query,function(err,doc){
       
         res.json(doc);        
@@ -472,8 +472,8 @@ function remerciement(req,res){
     
     Plaque.findOneAndUpdate(query,req.body,{upsert:true},function(err,doc){
         console.log(doc);
-        if (err) return res.send(500, { error: err });
-    return res.send("succesfully saved");
+        if (err) return res.json(0);
+    return res.json("1");
     });
     
     
