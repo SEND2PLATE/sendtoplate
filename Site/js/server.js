@@ -372,7 +372,7 @@ if (nom == "notifsenvoyees") {
 				if (data[i].thanks == 1) {
 					$('#notifeb').append('<tr><td data-title="Nature du Danger" style="text-align:center;"><inject>' + data[i].num_plaque + '</inject></td><td data-title="Plaque" style="text-align:center;"><inject>' + data[i].date.substring(0, 16) + '</inject></td><td data-title="Date" style="text-align:center;"><inject>' + '<img src="https://i.stack.imgur.com/chwM4.png" style="width:10%";/>' + '</inject></td>')
 				} else {
-					$('#notifeb').append('<tr><td data-title="Nature du Danger" style="text-align:center;"><inject>' + data[i].num_plaque + '</inject></td><td data-title="Plaque" style="text-align:center;"><inject>' + data[i].date.substring(0, 16) + '</inject></td><td data-title="Date" style="text-align:center;"><inject>' + 'pending' + '</inject></td>')
+					$('#notifeb').append('<tr><td data-title="Nature du Danger" style="text-align:center;"><inject>' + data[i].num_plaque + '</inject></td><td data-title="Plaque" style="text-align:center;"><inject>' + data[i].date.substring(0, 16) + '</inject></td><td data-title="Date" style="text-align:center;"><inject>' + '' + '</inject></td>')
 				}
 			}
 		}
