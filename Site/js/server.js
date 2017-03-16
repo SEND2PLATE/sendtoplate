@@ -21,7 +21,7 @@ $('a#inscription').on({
         hide(document.getElementById('discop'));
         hide(document.getElementById('management'));
         show(document.getElementById('sep', 'table'));
-        $.post('api/disconnect', connexion, function (data, success) {});
+        $.post('http://sendtoplate.herokuapp.com/api/disconnect', connexion, function (data, success) {});
     }
 })
 var inscription = {};
@@ -29,11 +29,11 @@ $('input#envoie').on({
     click: function (e) {
         if ($('#password').val() != $('#password2').val()) {
             alert('Les deux mots de passes ne sont pas identiques')
-            document.location.href = "/inscription.html"
+            document.location.href = "inscription.html"
         }
         if ($('#mail').val() == "" || $('#password').val() == "") {
             alert('Champs manquant')
-            document.location.href = "/inscription.html"
+            document.location.href = "inscription.html"
         }
         else {
             inscription.mail = $('#mail').val();
@@ -42,16 +42,16 @@ $('input#envoie').on({
             var connexion = {};
             connexion.id = $('#mail').val();
             connexion.pass = $('#password').val();
-            $.post('api/userInscription', inscription, function (datap, successp) {
+            $.post('http://sendtoplate.herokuapp.com/api/userInscription', inscription, function (datap, successp) {
                 if (datap == 1) {
-                    $.post('api/signup', connexion, function (data, success) {
+                    $.post('http://sendtoplate.herokuapp.com/api/signup', connexion, function (data, success) {
                         setCookie("username", connexion.id, "100")
                     })
-                    document.location.href = "/sendinscription.html"
+                    document.location.href = "sendinscription.html"
                 }
                 if (datap == 2) {
                     alert("L'adresse email est déjà utilisé")
-                    document.location.href = "/inscription.html"
+                    document.location.href = "inscription.html"
                 }
             })
         }
@@ -63,9 +63,43 @@ $('a#disco').on({
         hide(document.getElementById('discop'));
         hide(document.getElementById('management'));
         show(document.getElementById('sep', 'table'));
-        $.post('api/logout', function (data, success) {});
+        $.post('http://sendtoplate.herokuapp.com/api/logout', function (data, success) {});
     }
 })
+
+$('div#testid').on({
+    click: function (e) {
+        console.log("On a bien cliqué, c'est ok");
+    }
+});
+
+
+/* RESPONSIVE CASE */
+
+function disco() {
+        document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        $.post('http://sendtoplate.herokuapp.com/api/logout', function (data, success) {});
+}
+
+function modifprofil() {
+	document.location.href = "profil.html"
+}
+
+function platte() {
+	        document.location.href = "plaques.html"
+}
+
+function notife() {
+ document.location.href = "notifsenvoyees.html"
+}
+
+function notifr() {
+	document.location.href = "notifsrecues.html"
+
+}
+/* END RESPONSIVE CASe */
+
+
 $('a#send').on({
     click: function (e) {
         plaque.plaque = $('#plaque').val();
@@ -73,17 +107,17 @@ $('a#send').on({
         plaque.user = getCookie("username")
         if ($('#plaque').val() == "" || $('#incident').val() == "") {
             alert('Remplissez tout les champs')
-            document.location.href = "/index.html"
+            document.location.href = "index.html"
         }
         else {
             if (document.cookie != "") {
-                $.post('/api/apiplate', plaque, function (data, success) {
-                    document.location.href = "/send.html"
+                $.post('/http://sendtoplate.herokuapp.com/api/apiplate', plaque, function (data, success) {
+                    document.location.href = "send.html"
                 })
             }
             else {
                 alert('Connectez vous ou inscrivez vous pour notifier une plaque')
-                document.location.href = "/index.html"
+                document.location.href = "index.html"
             }
         }
     }
@@ -93,28 +127,36 @@ $('input#connexionuser').on({
     click: function (e) {
         connexion.id = $('#mailco').val();
         connexion.pass = $('#passco').val();
-        $.post('api/signup', connexion, function (data, success) {
+        $.post('http://sendtoplate.herokuapp.com/api/signup', connexion, function (data, success) {
             if (data == 1) {
                 setCookie("username", connexion.id, "100")
-                document.location.href = "/connexiont.html"
+                document.location.href = "connexiont.html"
             }
             if (data == 0) {
-                document.location.href = "/connexionw.html"
+                document.location.href = "connexionw.html"
             }
         })
     }
 })
 $('a#modifprofil').on({
     click: function (e) {
-        document.location.href = "/profil.html"
+        document.location.href = "profil.html"
     }
 });
 if (nom == ("profil")) {
+<<<<<<< Updated upstream
 	var send={};
 	send.pass='sendtoplateadministration4561&'
 	send.id=getCookie('username');
     $.post('api/getinfo', send,function (data, success) {
 		console.log(data);
+=======
+    var send={};
+    send.pass='sendtoplateadministration4561&'
+    send.id=getCookie('username');
+    $.post('http://sendtoplate.herokuapp.com/api/getinfo', send,function (data, success) {
+        console.log(data);
+>>>>>>> Stashed changes
         $('#name').val(data.nom)
         $('#nickname').val(data.prenom)
         $('#age').val(data.age)
@@ -130,7 +172,7 @@ if (nom == ("plaques")) {
     hide(document.getElementById('pl4'));
     var plaque = {};
     plaque.id = getCookie("username");
-    $.post('api/getplaques', plaque, function (data, success) {
+    $.post('http://sendtoplate.herokuapp.com/api/getplaques', plaque, function (data, success) {
         if (data.length > 0) {
             $('#plaque1').html(data[0]);
             show(document.getElementById('pl1'));
@@ -154,14 +196,14 @@ $('input#addplaque').on({
         var plaqueux = {};
         plaqueux.plaque = $('#plak').val()
         plaqueux.id = getCookie("username");
-        $.post('api/addplak', plaqueux, function (data, success) {
-            document.location.href = "/plaques.html"
+        $.post('http://sendtoplate.herokuapp.com/api/addplak', plaqueux, function (data, success) {
+            document.location.href = "plaques.html"
         })
     }
 });
 $('a#platte').on({
     click: function (e) {
-        document.location.href = "/plaques.html"
+        document.location.href = "plaques.html"
     }
 })
 var profil = {}
@@ -174,8 +216,13 @@ $('input#sendprofil').on({
         profil.adresse = $('#adresse').val();
         profil.telephone = $('#phone').val();
         profil.username=getCookie("username");
+<<<<<<< Updated upstream
         $.post('api/profile', profil, function (data, success) {
             document.location.href = "/profil.html"
+=======
+        $.post('http://sendtoplate.herokuapp.com/api/profile', profil, function (data, success) {
+            document.location.href = "profil.html"
+>>>>>>> Stashed changes
         })
     }
 });
@@ -187,7 +234,7 @@ $('a#p1').on({
             send.id = user;
             var plaque = document.getElementById('plaque1').outerHTML.substring(21, document.getElementById('plaque1').outerHTML.length - 9)
             send.plate = plaque;
-            $.post('api/delete', send, function (data, success) {
+            $.post('http://sendtoplate.herokuapp.com/api/delete', send, function (data, success) {
                 location.reload();
             });
         }
@@ -204,7 +251,7 @@ $('a#p2').on({
             send.id = user;
             var plaque = document.getElementById('plaque2').outerHTML.substring(21, document.getElementById('plaque1').outerHTML.length - 9)
             send.plate = plaque;
-            $.post('api/delete', send, function (data, success) {
+            $.post('http://sendtoplate.herokuapp.com/api/delete', send, function (data, success) {
                 location.reload();
             });
         }
@@ -221,7 +268,7 @@ $('a#p3').on({
             send.id = user;
             var plaque = document.getElementById('plaque3').outerHTML.substring(21, document.getElementById('plaque1').outerHTML.length - 9)
             send.plate = plaque;
-            $.post('api/delete', send, function (data, success) {
+            $.post('http://sendtoplate.herokuapp.com/api/delete', send, function (data, success) {
                 location.reload();
             });
         }
@@ -238,7 +285,7 @@ $('a#p4').on({
             send.id = user;
             var plaque = document.getElementById('plaque4').outerHTML.substring(21, document.getElementById('plaque1').outerHTML.length - 9)
             send.plate = plaque;
-            $.post('api/delete', send, function (data, success) {
+            $.post('http://sendtoplate.herokuapp.com/api/delete', send, function (data, success) {
                 location.reload();
             });
         }
@@ -249,7 +296,7 @@ $('a#p4').on({
 })
 $('a#notifr').on({
     click: function (e) {
-        document.location.href = "/notifsrecues.html"
+        document.location.href = "notifsrecues.html"
     }
     
     
@@ -257,14 +304,14 @@ $('a#notifr').on({
 
 $('a#notife').on({
     click: function (e) {
-        document.location.href = "/notifsenvoyees.html"
+        document.location.href = "notifsenvoyees.html"
     }
 })
 if (nom == "notifsrecues") {
     var ide = getCookie("username");
     var send = {};
     send.id = ide;
-    $.post('/api/getn', send, function (data, success) {
+    $.post('/http://sendtoplate.herokuapp.com/api/getn', send, function (data, success) {
         if (data.length != 0) {
             b = Math.min(data.length, 100);
             for (i = 0; i < b; i++) {
@@ -324,7 +371,7 @@ $("body").on("click",pocebleus, function () {
  
     
         
-    $.post('/api/thanks',{'sendemail':email,'plaque':plate,'thanks':1},function(data,success){
+    $.post('/http://sendtoplate.herokuapp.com/api/thanks',{'sendemail':email,'plaque':plate,'thanks':1},function(data,success){
         
         alert('Le remerciement a été envoyé')
         
@@ -341,7 +388,7 @@ if (nom == "notifsenvoyees") {
     var ide = getCookie("username");
     var send = {};
     send.id = ide;
-    $.post('/api/mNotif', send, function (data, success) {
+    $.post('/http://sendtoplate.herokuapp.com/api/mNotif', send, function (data, success) {
         console.log(data);
         if (data.length != 0) {
             for (i = 0; i < data.length; i++) {
