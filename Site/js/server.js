@@ -82,38 +82,6 @@ function notifr() {
 }
 /* END RESPONSIVE CASe */
 
-
-$('a#forgetmdp').on({
-	click:function(e) {
-		document.location.href = "/forgetmdp.html"
-	}
-})
-
-$('input#sendusermdp').on({ 
-
-	click:function(e) {
-		var email = $('#mailtosend').val();
-		$.post('http://sendtoplate.herokuapp.com/api/forget', email, function (data, success) {
-
-			if(data == 1 ) {
-				document.location.href = "/forgetmdpvalidate.html"
-			} else {
-				document.location.href = "/forgetmdpvalidateerror.html"
-			}
-
-		});
-
-
-
-		// ENVOIE DU MAIL // 
-
-
-
-
-	}
-})
-
-
 $('a#disco').on({
 	click: function (e) {
 		document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";

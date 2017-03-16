@@ -75,7 +75,7 @@ function inscription(req, res) {
         email: mail
         , num_plaque: plaque
         , type:1
-		, date:new Date();
+		, date:new Date()
     })
     var query = User.find(null);
     query.where('email', mail);
@@ -175,10 +175,10 @@ function addplak(req, res) {
     var plaque_num = req.body.plaque.toUpperCase();
     var mail = req.body.id;
     var plaque = new Plaque({
-        num_plaque: plaque_num;
-        , email: mail;
-        , type: 1;
-		, date:new Date();
+        num_plaque: plaque_num
+        , email: mail
+        , type: 1
+		, date:new Date()
     , });
     var query=Plaque.find(null);
     query.where('email',req.session.username);
