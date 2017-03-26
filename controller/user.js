@@ -5,7 +5,8 @@ mongoose.connect("mongodb://admin:galerien@ds145389.mlab.com:45389/sendtoplate",
 });
 
 var async = require('async');
-
+var passwordHash=require('password-hash');
+var generatePassword = require('password-generator');
 
 
 // Schema for the dabase
@@ -55,7 +56,7 @@ function islog(req, res) {
 
 function inscription(req, res) {
     var mail = req.body.mail;
-    var password = req.body.password;
+    var password = passwordHash.generate(req.body.password);
     var plaque = req.body.plaque.toUpperCase();
     if (req.body.other) {
         var other = req.body.other;
@@ -103,21 +104,25 @@ function inscription(req, res) {
 
 function userConnexion(req, res) {
     var username = req.body.id;
-    var password = req.body.pass;
+
     var query = User.find(null);
     query.where('email', username);
     query.exec(function (err, rese) {
         if (rese.length >= 1) {
-            query.where('pass', password);
-            query.exec(function (erour, resou) {
-                if (resou.length >= 1) {
-                    req.session.username = req.body.id;
-                    res.json(1)
-                }
-                else {
-                    res.json(0);
-                }
-            })
+       
+            
+            var passn=rese[0].pass;
+    
+            var test=passwordHash.verify(req.body.pass,passn);
+          
+            if(test==true){
+                
+                res.json(1);
+                
+            }
+            else{
+                res.json(0);
+            }
         }
         else {
             res.json(0);
@@ -138,18 +143,33 @@ function modifierProfile(req, res) {
     var badresse = req.body.adresse;
     var btelephone = req.body.telephone;
     var bgenre=req.body.genre;
+    var bmdp=passwordHash.generate(req.body.password);
     
+    if(req.body.password!=""){
     var query=User.find(null);
     query.where('email',req.body.username);
-    User.findOneAndUpdate(query,req.body,{upsert:true},function(err,doc){
+    User.findOneAndUpdate(query,{nom:bnom,prenom:bprenom,age:bage,pays:bpays,adresse:badresse,telephone:btelephone,genre:bgenre,pass:bmdp},{upsert:true},function(err,doc){
         
         if (err) return res.json(0);
     return res.json(1);
     });
+    }
+    else{
+            var query=User.find(null);
+    query.where('email',req.body.username);
+    User.findOneAndUpdate(query,{nom:bnom,prenom:bprenom,age:bage,pays:bpays,adresse:badresse,telephone:btelephone,genre:bgenre},{upsert:true},function(err,doc){
+        
+        if (err) return res.json(0);
+    return res.json(1);
+    });
+    }
+        
+    
  
     
  
 }
+
 
 function listesPlaques(req, res) {
   
@@ -359,6 +379,7 @@ function enterplate(req, res) {
     plaque.save(function (err) {
         if (err) {
             return console.error(err);
+            res.json(0)
         }
     });
     res.json(1);
@@ -480,7 +501,7 @@ function remerciement(req,res){
     Plaque.findOneAndUpdate(query,req.body,{upsert:true},function(err,doc){
       
         if (err) return res.json(0);
-    return res.json("1");
+    return res.json(1);
     });
     
     
@@ -489,10 +510,16 @@ function remerciement(req,res){
 
 function forgetpassword(req,res){
     
-    var query=User.find(null);
-    query.where('email',req.body.mail);
-    query.exec(function (errr, resee) {
-        if(resee.length>0){
+    var newpassunash=generatePassword();
+    var newpass=passwordHash.generate(newpassunash);
+
+    var lel={};
+    lel.pass=newpass;
+    lel.email=req.body.mail;
+ 
+    User.findOneAndUpdate({'email':req.body.mail},lel,function (errr, resee) {
+       
+        if(resee){
 const nodemailer = require('nodemailer');
  let transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -503,9 +530,9 @@ const nodemailer = require('nodemailer');
 });
 let mailOptions = {
     from: '"SendToPlate 👻" <sendtoplate@gmail.com>', // sender address
-    to: resee[0].email, // list of receivers
+    to: resee.email, // list of receivers
     subject: '[SendToPlate] Récupération de votre mot de passe ✔', // Subject line
-    text: 'Votre mot de passe est le : '+resee[0].pass, // plain text body
+    text: 'Votre nouveau mot de passe est le : '+newpassunash, // plain text body
    
 }
 // send mail with defined transport object
@@ -527,7 +554,7 @@ transporter.sendMail(mailOptions, (error, info) => {
             
         }
         else{
-             res.json("0");
+             res.json(0);
         }
         
                   

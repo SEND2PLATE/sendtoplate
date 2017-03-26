@@ -15,17 +15,7 @@ if (document.cookie != "") {
 	show(document.getElementById('management', 'initial'));
 }
 var plaque = {};
-$("#passco").keyup(function(event){
-    if(event.keyCode == 13){
-        $("a#inscription").click();
-    }
-});
 
-$("#mailco").keyup(function(event){
-    if(event.keyCode == 13){
-        $("a#inscription").click();
-    }
-});
 
 $('a#inscription').on({
 	click: function (e) {
@@ -256,6 +246,7 @@ $('input#sendprofil').on({
         var agetext = ageel.options[ageel.selectedIndex].value;
 		profil.nom = $('#name').val();
 		profil.prenom = $('#nickname').val();
+        profil.password = $('#password').val();
 		profil.age = agetext;
 		profil.pays = counttext;
         profil.genre=genretext;

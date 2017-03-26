@@ -125,20 +125,23 @@
 						</header>
 						<!-- En cas de validation -->
 
-    <form method="post" action="modifprofil.html">
+    <form method="post" action="modifprofil.html" autocomplete="off">
         <label>Nom : 
-        <input id="name" type="text" name="nom" onFocus="javascript:this.value=''"></input>
+        <input id="name" type="text" name="nom" onFocus="javascript:this.value=''" autocomplete="off"></input>
         </label>
         <label>Prénom : 
-        <input id="nickname" type="text" name="prenom" onFocus="javascript:this.value=''"></input>
+        <input id="nickname" type="text" name="prenom" onFocus="javascript:this.value=''" autocomplete="off"></input>
         </label>
            
         </label>
         <label>Adresse : 
-        <input id="adresse" type="text" name="adresse" onFocus="javascript:this.value=''"></input> 
+        <input id="adresse" type="text" name="adresse" onFocus="javascript:this.value=''" autocomplete="off"></input> 
         </label>
         <label>Téléphone : 
-        <input id="phone" type="text" name="tel" onFocus="javascript:this.value=''"></input> 
+        <input id="phone" type="text" name="tel" onFocus="javascript:this.value=''" autocomplete="off"></input> 
+        </label>
+        <label>Mot de passe : Entrez un nouveau mot de passe pour le changer ou laisser vide
+        <input id="password" type="password" name="pass" onFocus="javascript:this.value=''" autocomplete="off"></input> 
         </label>
 <br />
 <label id="lgenre">Genre : 
