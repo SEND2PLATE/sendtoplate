@@ -19,9 +19,16 @@ var request = require("request");
 
 
 var publicFolder = __dirname + '/site/';
+var passport = require("passport");
+var BearerStrategy = require("passport-http-bearer").Strategy;
+var jwt = require('jsonwebtoken');
+var secretKey = "sendtoplatetkt";
 
-
-
+var user = {
+    id: "123",
+    firtname: "James",
+    lastname: "Bond"
+};
 
 
 //                  Express.JS Routage  
@@ -38,6 +45,7 @@ var urlencodedParser = bodyParser.urlencoded({
 app.use(urlencodedParser);
 
 var router = express.Router();
+
 
 app.use('/api/', router);
 
