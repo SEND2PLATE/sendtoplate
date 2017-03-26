@@ -6,6 +6,8 @@ mongoose.connect("mongodb://admin:galerien@ds145389.mlab.com:45389/sendtoplate",
 
 var async = require('async');
 
+
+
 // Schema for the dabase
 var plaqueSchema = mongoose.Schema({
     num_plaque: String
@@ -32,6 +34,7 @@ var userSchema = mongoose.Schema({
         , adresse: String
         , telephone: String
         , pays:String
+    , genre:String
     
     })
     /** Middleware for limited access */
@@ -134,6 +137,7 @@ function modifierProfile(req, res) {
     var bpays = req.body.pays;
     var badresse = req.body.adresse;
     var btelephone = req.body.telephone;
+    var bgenre=req.body.genre;
     
     var query=User.find(null);
     query.where('email',req.body.username);
@@ -465,19 +469,69 @@ function myNotif(req,res){
     
 }
 
+
 function remerciement(req,res){
     
-    console.log(req.body);
+    
     var query=Plaque.find(null);
     query.where('sendemail',req.body.sendemail);
-    query.where('num_plaque',req.body.plaque);
-    
+    query.where('_id',req.body.id);
+    query.where('type',0)
     Plaque.findOneAndUpdate(query,req.body,{upsert:true},function(err,doc){
-        console.log(doc);
+      
         if (err) return res.json(0);
     return res.json("1");
     });
     
+    
+    
+}
+
+function forgetpassword(req,res){
+    
+    var query=User.find(null);
+    query.where('email',req.body.mail);
+    query.exec(function (errr, resee) {
+        if(resee.length>0){
+const nodemailer = require('nodemailer');
+ let transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'sendtoplate@gmail.com',
+        pass: 'sendtoplate#59000'
+    }
+});
+let mailOptions = {
+    from: '"SendToPlate 👻" <sendtoplate@gmail.com>', // sender address
+    to: resee[0].email, // list of receivers
+    subject: '[SendToPlate] Récupération de votre mot de passe ✔', // Subject line
+    text: 'Votre mot de passe est le : '+resee[0].pass, // plain text body
+   
+}
+// send mail with defined transport object
+transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+        return console.log(error);
+    }
+
+    res.json(1);
+});
+            
+            
+            
+          
+            
+            
+            
+            
+            
+        }
+        else{
+             res.json("0");
+        }
+        
+                  
+     });
     
     
 }
@@ -504,5 +558,6 @@ module.exports = function (app) {
     app.post('/delete',deleteplate)
     app.post('/mNotif',myNotif)
     app.post('/thanks',remerciement)
+    app.post('/forget',forgetpassword)
 
 };

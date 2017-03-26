@@ -5,7 +5,7 @@ nom = nom.split("/");
 nom = nom[nom.length - 1];
 nom = nom.substr(0, nom.lastIndexOf("."));
 nom = nom.replace(new RegExp("(%20|_|-)", "g"), "");
-if (document.cookie == "") {
+if (document.cookie=="") {
 	hide(document.getElementById('discop'));
 	hide(document.getElementById('management'));
 }
@@ -15,6 +15,18 @@ if (document.cookie != "") {
 	show(document.getElementById('management', 'initial'));
 }
 var plaque = {};
+$("#passco").keyup(function(event){
+    if(event.keyCode == 13){
+        $("a#inscription").click();
+    }
+});
+
+$("#mailco").keyup(function(event){
+    if(event.keyCode == 13){
+        $("a#inscription").click();
+    }
+});
+
 $('a#inscription').on({
 	click: function (e) {
 		document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
@@ -34,7 +46,9 @@ $('input#envoie').on({
 		if ($('#mail').val() == "" || $('#password').val() == "") {
 			alert('Champs manquant')
 			document.location.href = "/inscription.html"
-		} else {
+            
+		} 
+        else {
 			inscription.mail = $('#mail').val();
 			inscription.password = $('#password').val();
 			inscription.plaque = $('#plaque').val();
@@ -81,6 +95,41 @@ function notifr() {
 
 }
 /* END RESPONSIVE CASe */
+
+
+$('a#forgetmdp').on({
+	click:function(e) {
+		document.location.href = "/forgetmdp.html"
+	}
+})
+
+$('input#sendusermdp').on({ 
+
+	click:function(e) {
+       
+        var ok={};
+		var email = $('#mailtosend').val();
+        ok.mail=email;
+		$.post('api/forget', ok, function (data, success) {
+
+			if(data == 1 ) {
+				document.location.href = "/forgetmdpvalidate.html"
+			} else {
+				document.location.href = "/forgetmdpvalidateerror.html"
+			}
+
+		});
+
+
+
+		// ENVOIE DU MAIL // 
+
+
+
+
+	}
+})
+
 
 $('a#disco').on({
 	click: function (e) {
@@ -137,13 +186,22 @@ if (nom == ("profil")) {
 	send.pass = 'sendtoplateadministration4561&'
 	send.id = getCookie('username');
 	$.post('api/getinfo', send, function (data, success) {
-		console.log(data);
+
+      
 		$('#name').val(data.nom)
 		$('#nickname').val(data.prenom)
-		$('#age').val(data.age)
-		$('#country').val(data.pays)
 		$('#adresse').val(data.adresse)
 		$('#phone').val(data.telephone)
+        $('#country option[value='+data.pays+']').attr("selected", "selected");
+        $('#age option[value='+data.age+']').attr("selected", "selected");
+        $('#genre option[value='+data.genre+']').attr("selected", "selected");
+
+
+
+       
+
+     
+        
 	})
 }
 if (nom == ("plaques")) {
@@ -190,13 +248,21 @@ $('a#platte').on({
 var profil = {}
 $('input#sendprofil').on({
 	click: function (e) {
+        var countel = document.getElementById('country');
+        var counttext = countel.options[countel.selectedIndex].value;
+        var genrel = document.getElementById('genre');
+        var genretext = genrel.options[genrel.selectedIndex].value;
+        var ageel = document.getElementById('age');
+        var agetext = ageel.options[ageel.selectedIndex].value;
 		profil.nom = $('#name').val();
 		profil.prenom = $('#nickname').val();
-		profil.age = $('#age').val();
-		profil.pays = $('#country').val();
+		profil.age = agetext;
+		profil.pays = counttext;
+        profil.genre=genretext;
 		profil.adresse = $('#adresse').val();
 		profil.telephone = $('#phone').val();
 		profil.username = getCookie("username");
+        
 		$.post('api/profile', profil, function (data, success) {
 			document.location.href = "/profil.html"
 		})
@@ -284,12 +350,15 @@ if (nom == "notifsrecues") {
 	var send = {};
 	send.id = ide;
 	$.post('/api/getn', send, function (data, success) {
+    
 
 		if (data.length != 0) {
 			b = Math.min(data.length, 100);
 			for (i = 0; i < b; i++) {
-				// setCookie("plaque"+i, data[i]._id, "100")
-
+              
+               
+				
+             
 				/*
 				$('#notifer').html('<tr><td data-title="Nature du danger" style="text-align:center;"><inject id="pr'+i+'"></inject></td><td data-title="Par" style="text-align:center;"><inject id="pu'+i+'"></inject></td><td data-title="Plaque" style="text-align:center;"><inject id="p'+i+'"></inject></td></tr>')
 				$('#p'+i).html(data[i].num_plaque);*/
@@ -307,8 +376,10 @@ if (nom == "notifsrecues") {
 				}
 				if (data[i].thanks == 1) {
 					$('#notifer').append('<tr id="tkt' + i + '"><td data-title="Nature du danger" style="text-align:center;"><inject>' + tkt + '</inject></td><td data-title="Par" style="text-align:center;"><inject id="par' + i + '">' + data[i].sendemail + '</inject></td><td data-title="Plaque" style="text-align:center;"><inject id=p' + i + '>' + data[i].num_plaque + '</inject></td><td data-title="Date" style="text-align:center;"><inject>' + data[i].date.substring(0, 16) + '</inject></td>' + '<td data-title="Remerciement" style="text-align:center;"><inject>' + '<a   ><img src="https://image.freepik.com/free-icon/thumb-up-gesture-stroke_318-71265.jpg" style="width:10%";/></a>' + '</inject></td>')
+                     setCookie("id"+i, data[i]._id, "-1")
 				} else {
-					$('#notifer').append('<tr id="tkt' + i + '"><td data-title="Nature du danger" style="text-align:center;"><inject>' + tkt + '</inject></td><td data-title="Par" style="text-align:center;"><inject id="par' + i + '">' + data[i].sendemail + '</inject></td><td data-title="Plaque" style="text-align:center;"><inject id=p' + i + '>' + data[i].num_plaque + '</inject></td><td data-title="Date" style="text-align:center;"><inject>' + data[i].date.substring(0, 16) + '</inject></td>' + '<td data-title="Remerciement" style="text-align:center;"><inject>' + '<a href="" id="pocebleu' + i + '"><img src="https://i.stack.imgur.com/chwM4.png" style="width:10%";/></a>' + '</inject></td>')
+					$('#notifer').append('<tr id="tkt' + i + '"><td data-title="Nature du danger" style="text-align:center;"><inject>' + tkt + '</inject></td><td data-title="Par" style="text-align:center;"><inject id="par' + i + '">' + data[i].sendemail + '</inject></td><td data-title="Plaque" style="text-align:center;"><inject id=p' + i + '>' + data[i].num_plaque + '</inject></td><td data-title="Date" style="text-align:center;"><inject>' + data[i].date.substring(0, 16) + '</inject></td>' + '<td data-title="Remerciement" style="text-align:center;"><inject>' + '<a href="" id="pocebleu' + i + '"><img src="https://i.stack.imgur.com/chwM4.png" style="width:10%";/></a>' + '</inject></td>'+ '</inject></td>')
+                    setCookie("id"+i, data[i]._id, "100")
 
 
 				}
@@ -339,13 +410,13 @@ $("body").on("click", pocebleus, function () {
 
 	var number = $(this).attr('id').substr(8);
 	var email = ($('#par' + number).html());
-	var plate = ($('#p' + number).html());
+	var id = getCookie('id'+number);
 
 
 
 	$.post('/api/thanks', {
 		'sendemail': email,
-		'plaque': plate,
+		'id': id,
 		'thanks': 1
 	}, function (data, success) {
 
@@ -365,7 +436,7 @@ if (nom == "notifsenvoyees") {
 	var send = {};
 	send.id = ide;
 	$.post('/api/mNotif', send, function (data, success) {
-		console.log(data);
+	
 		if (data.length != 0) {
 			for (i = 0; i < data.length; i++) {
 
@@ -416,4 +487,14 @@ function show(elements, specifiedDisplay) {
 	for (var index = 0; index < elements.length; index++) {
 		elements[index].style.display = specifiedDisplay || 'inline-flex';
 	}
+}
+
+function getInputsByValue(value)
+{
+    var allInputs = document.getElementsByTagName("input");
+    var results = [];
+    for(var x=0;x<allInputs.length;x++)
+        if(allInputs[x].value == value)
+            results.push(allInputs[x]);
+    return results;
 }

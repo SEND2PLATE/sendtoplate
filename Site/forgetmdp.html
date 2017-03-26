@@ -15,51 +15,15 @@
 		<script src="js/skel.min.js"></script>
 		<script src="js/skel-layers.min.js"></script>
 		<script src="js/init.js"></script>
-	
+
 			<link rel="stylesheet" href="css/skel.css" />
 			<link rel="stylesheet" href="css/style.css" />
-	
+
 		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
 	</head>
 	<body class="no-sidebar">
 
-		<div class="modal blur-effect" id="popup">
-			<div class="popup-content">
-				<h3>Connexion à l'espace Membre</h3>
-				<div>
-			<form id="connexionuti">
-	<div>
-    <label>
-      Email : 
-    </label>
-    <div>
-      <input id='mailco' type="text" name="email" /> 
-   </div>
-  </div>
 
-  	<div>
-    <label>
-      Mot de passe : 
-    </label>
-    <div>
-      <input id='passco' type="password" name="pass" /> 
-   </div>
-  </div>
-  <br />
-  	<div>
-    <div style="text-align:center;">
-		
-      <input type="button" id='connexionuser' value="Connexion" /> 
-   </div>
-  </div>
-			</form>
-			<br />
-			Pas encore <a id="inscription" href="inscription.html" style="font-color:white;">inscrit ?</a>,<a href="forgetmdp.html" id="forgetmdp" style="font-color:white;">mot de passe oublié ?</a> 
-					
-					<div class="close"></div>
-				</div>
-			</div>
-		</div>
 
 
 
@@ -105,7 +69,7 @@
 								<li><a href="contact.html">Contact</a></li>
 								<li id="sep"><a id="se" href="" class="popup-button" data-modal="popup">Se Connecter</a></li>
                                 <li id="discop"><a id="disco" href="">Se déconnecter</a></li>
-							
+								
 
 							</ul>
 						</nav>
@@ -117,30 +81,32 @@
 				<div class="container">
 					<section>
 						<header class="major" style="padding-bottom:0px;">
-							<h2 style="text-align:center;">A propos</h2>
+							<h2 style="text-align:center;">Mot de passe oublié ?</h2>
 						</header>
 
-						<h3>La sécurité est l’enjeu citoyen quotidien </h3>
-		Tout risque potentiel détecté sur un véhicule doit être signalé.
-		<br /><br />
+				Un e-mail vous sera envoyé avec votre mot de passe.
+				<div>
+		
+	<div>
+    <label>
+      Email : 
+    </label>
+    <div>
+      <input id='mailtosend' type="text" name="email" /> 
+   </div>
+  </div>
 
-		<b>N’avez vous jamais:</b>
-<li>Vu une voiture avec un pneu presque à plat sans en informer son chauffeur?</li>
-<li>Roulé derrière une voiture qui pollue sans pouvoir informer son chauffeur? </li>
-<li>Rêvé d’être informé par quelqu’un si c’était votre voiture ou celle de votre famille?</li>
-
-
-<br />
-<span style="font-size:25px;"><b>Send2Plate</b></span> a pour objectif d’y apporter une <b>réponse innovante et pratique</b> en s’appuyant sur une structure de services web et mobiles où n’importe qui pourra envoyer ou recevoir des notifications en utilisant simplement le numéro de plaque d’immatriculation. 
-<br />
-Notre <b>vision</b> est de rendre la route plus sûre pour tout le monde
-<br />
-Notre <b>mission</b> est d’apporter des outils innovants pour que chacun puisse agir de façon citoyenne pour la sécurité et l’environnement.
-
-<hr>
-Solution imaginée par <a href="https://be.linkedin.com/in/johanndumser" target="_blank" style="color:black;">Johann Dumser</a>
-<br />
-Solution développée par l’Ecole Centrale de Lille, David Zerah, Axel Marciano , Florian QU, Maxime Catrice 
+  <br />
+  	<div>
+    <div style="text-align:center;">
+		
+      <input type="button" id='sendusermdp' value="Envoyer" /> 
+   </div>
+  </div>
+			
+			<br />
+					
+				</div>
 
 
 					</section>

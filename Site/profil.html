@@ -56,7 +56,7 @@
   </div>
 			</form>
 			<br />
-			Pas encore <a id="inscription" href="inscription.html" style="font-color:white;">inscrit ?</a> 
+			Pas encore <a id="inscription" href="inscription.html" style="font-color:white;">inscrit ?</a>,<a href="forgetmdp.html" id="forgetmdp" style="font-color:white;">mot de passe oublié ?</a> 
 					
 					<div class="close"></div>
 				</div>
@@ -87,7 +87,6 @@
 										<li><a href="" id='notifr'>Mes notifications reçues</a></li>
 
 										<!-- 										<li><a class="popup-button" data-modal="popup">Se connecter</a></li>
-
 										<li>
 											<a href="">Phasellus consequat</a>
 											<ul>
@@ -108,7 +107,8 @@
 								<li><a href="contact.html">Contact</a></li>
 								<li id="sep"><a id="se" href="" class="popup-button" data-modal="popup">Se Connecter</a></li>
                                 <li id="discop"><a id="disco" href="">Se déconnecter</a></li>
-								<li><a href="admin.html">Administration</a></li>
+							
+
 							</ul>
 						</nav>
 
@@ -132,11 +132,7 @@
         <label>Prénom : 
         <input id="nickname" type="text" name="prenom" onFocus="javascript:this.value=''"></input>
         </label>
-        <label>Age : 
-        <input id="age" type="text" name="age" onFocus="javascript:this.value=''"></input> 
-        </label>
-        <label>Pays : 
-        <input id="country" type="text" name="pays" onFocus="javascript:this.value=''"></input> 
+           
         </label>
         <label>Adresse : 
         <input id="adresse" type="text" name="adresse" onFocus="javascript:this.value=''"></input> 
@@ -144,19 +140,17 @@
         <label>Téléphone : 
         <input id="phone" type="text" name="tel" onFocus="javascript:this.value=''"></input> 
         </label>
-<label>Genre : 
-<label>
-  <input type="checkbox" id="homme" value="homme">
-  Homme
+<br />
+<label id="lgenre">Genre : 
+<select name="genre" id="genre"> 
+<option value="Homme">Homme  </option>
+<option value="Femme">Femme  </option>
+    </select>
 </label>
 
-<input type="checkbox" id="femme" value="femme">
-  Femme
-</label>
-</label>
 <br />
         <label>Pays : 
-<select name="pays"> 
+<select name="pays" id="country"> 
 <option value="Afghanistan">Afghanistan </option>
 <option value="Afrique_Centrale">Afrique_Centrale </option>
 <option value="Afrique_du_sud">Afrique_du_Sud </option> 
@@ -225,7 +219,7 @@
 <option value="Feroe">Feroe </option>
 <option value="Fidji">Fidji </option>
 <option value="Finlande">Finlande </option>
-<option value="France" selected>France </option>
+<option value="France">France </option>
 <option value="Gabon">Gabon </option>
 <option value="Gambie">Gambie </option>
 <option value="Georgie">Georgie </option>
@@ -389,8 +383,8 @@
         </label>
         <br />
         <label>Année de naissance : 
-<select name="age" style="width:89px;">
-	 <option value="2017">2017</option>
+<select id="age" name="age" style="width:89px;">
+	     <option value="2017">2017</option>
 	 	 <option value="2016">2016</option>
 	 	 <option value="2015">2015</option>
 	 	 <option value="2014">2014</option>
